@@ -2,7 +2,7 @@ import { ApiError } from './errors';
 import { RateLimiter } from './rateLimiter';
 
 const BASE_URL = 'https://api.jikan.moe/v4';
-const rateLimiter = new RateLimiter(1000); // 1 request per second
+const rateLimiter = new RateLimiter(1000, 3, 1.5); // 1 request per second, 3 retries, 1.5x backoff
 
 async function handleApiResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -18,21 +18,21 @@ async function handleApiResponse<T>(response: Response): Promise<T> {
 }
 
 export async function apiGet<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
-  await rateLimiter.waitForNext();
-  
   const queryString = new URLSearchParams(
     Object.entries(params).filter(([_, value]) => value !== '')
   ).toString();
   
   const url = `${BASE_URL}${endpoint}${queryString ? `?${queryString}` : ''}`;
   
-  try {
-    const response = await fetch(url);
-    return handleApiResponse<T>(response);
-  } catch (error) {
-    if (error instanceof ApiError) {
-      throw error;
+  return rateLimiter.executeWithRetry(async () => {
+    try {
+      const response = await fetch(url);
+      return handleApiResponse<T>(response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      throw new ApiError(500, 'Failed to fetch data from the API');
     }
-    throw new ApiError(500, 'Failed to fetch data from the API');
-  }
+  });
 }

@@ -16,7 +16,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabCh
   ];
 
   return (
-    <div className="bg-zinc-800 rounded-lg shadow-lg mb-6">
+    <div className="bg-zinc-900 rounded-lg shadow-lg mb-6">
       <div className="flex">
         {tabs.map(tab => (
           <button
@@ -25,12 +25,12 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabCh
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 ${
               activeTab === tab.id
                 ? 'text-red-400 border-b-2 border-red-400'
-                : 'text-gray-300 hover:text-white'
+                : 'text-gray-400 hover:text-white'
             }`}
           >
             <tab.icon className="w-5 h-5" />
             <span className="font-medium">{tab.label}</span>
-            <span className="text-sm text-gray-400 hidden md:inline japanese-text">
+            <span className="text-sm text-gray-500 hidden md:inline japanese-text">
               {tab.japanese}
             </span>
           </button>

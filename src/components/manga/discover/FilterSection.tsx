@@ -24,7 +24,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2 japanese-text">
+        <label className="block text-sm font-medium text-gray-300 mb-2 japanese-text">
           ジャンル (Genre)
         </label>
         <FilterSelect
@@ -36,7 +36,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2 japanese-text">
+        <label className="block text-sm font-medium text-gray-300 mb-2 japanese-text">
           年 (Year)
         </label>
         <FilterSelect
@@ -48,7 +48,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2 japanese-text">
+        <label className="block text-sm font-medium text-gray-300 mb-2 japanese-text">
           評価 (Rating)
         </label>
         <FilterSelect

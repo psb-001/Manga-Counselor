@@ -36,10 +36,10 @@ export const DiscoverSection: React.FC<DiscoverSectionProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-lg shadow-sm">
-        <h2 className="text-2xl font-bold text-zinc-800 mb-6">
+      <div className="bg-zinc-900 p-6 rounded-lg shadow-lg border border-zinc-800">
+        <h2 className="text-2xl font-bold text-white mb-6">
           Discover New Manga
-          <span className="text-sm text-gray-500 ml-2 japanese-text">新しい発見</span>
+          <span className="text-sm text-gray-400 ml-2 japanese-text">新しい発見</span>
         </h2>
 
         <FilterSection
@@ -60,7 +60,7 @@ export const DiscoverSection: React.FC<DiscoverSectionProps> = ({
             <button
               onClick={handleRefresh}
               disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               <span>Refresh</span>

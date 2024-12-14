@@ -13,7 +13,7 @@ export const MangaCard: React.FC<MangaCardProps> = ({ manga, onMoreInfo }) => {
 
   return (
     <div 
-      className="relative group bg-zinc-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+      className="relative group bg-zinc-900 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -31,7 +31,7 @@ export const MangaCard: React.FC<MangaCardProps> = ({ manga, onMoreInfo }) => {
         />
         
         {isHovered && (
-          <div className="absolute inset-0 bg-black/80 p-3 flex flex-col justify-between transition-opacity duration-300">
+          <div className="absolute inset-0 bg-black/90 p-3 flex flex-col justify-between transition-opacity duration-300">
             <div>
               <h3 className="text-white font-bold text-sm mb-1 line-clamp-2">{manga.title}</h3>
               <p className="text-gray-300 text-xs line-clamp-3">{manga.synopsis}</p>
@@ -40,7 +40,7 @@ export const MangaCard: React.FC<MangaCardProps> = ({ manga, onMoreInfo }) => {
             <div className="flex justify-center gap-2">
               <button
                 onClick={() => saveManga(manga)}
-                className="bg-zinc-700 hover:bg-zinc-600 text-white p-2 rounded-full"
+                className="bg-zinc-800 hover:bg-zinc-700 text-white p-2 rounded-full"
                 title="Save for later"
               >
                 <BookmarkPlus className="w-4 h-4" />
@@ -58,7 +58,7 @@ export const MangaCard: React.FC<MangaCardProps> = ({ manga, onMoreInfo }) => {
       </div>
       
       <div className="p-2">
-        <h3 className="text-sm font-medium text-gray-200 line-clamp-1">{manga.title}</h3>
+        <h3 className="text-sm font-medium text-white line-clamp-1">{manga.title}</h3>
         <div className="flex justify-between items-center mt-1">
           <span className="text-xs text-gray-400">
             {manga.chapters ? `${manga.chapters} ch.` : 'Ongoing'}

@@ -9,13 +9,13 @@ interface MangaDetailsProps {
 
 export const MangaDetails: React.FC<MangaDetailsProps> = ({ manga, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-zinc-800 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-zinc-800 p-4 border-b border-zinc-700 flex justify-between items-center">
-          <h2 className="text-xl font-bold text-gray-100">{manga.title}</h2>
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-zinc-900 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-zinc-900 p-4 border-b border-zinc-800 flex justify-between items-center">
+          <h2 className="text-xl font-bold text-white">{manga.title}</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-zinc-700 rounded-full transition-colors"
+            className="p-2 hover:bg-zinc-800 rounded-full transition-colors"
           >
             <X className="w-5 h-5 text-gray-300" />
           </button>
@@ -52,12 +52,12 @@ export const MangaDetails: React.FC<MangaDetailsProps> = ({ manga, onClose }) =>
               </div>
               
               <div className="mb-4">
-                <h3 className="text-sm font-semibold text-gray-200 mb-2">Genres</h3>
+                <h3 className="text-sm font-semibold text-white mb-2">Genres</h3>
                 <div className="flex flex-wrap gap-2">
                   {manga.genres.map(genre => (
                     <span
                       key={genre.name}
-                      className="px-3 py-1 bg-zinc-700 rounded-full text-xs text-gray-300"
+                      className="px-3 py-1 bg-zinc-800 rounded-full text-xs text-gray-300"
                     >
                       {genre.name}
                     </span>
@@ -69,12 +69,12 @@ export const MangaDetails: React.FC<MangaDetailsProps> = ({ manga, onClose }) =>
           
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-200 mb-2">Synopsis</h3>
+              <h3 className="text-sm font-semibold text-white mb-2">Synopsis</h3>
               <p className="text-sm text-gray-300 leading-relaxed">{manga.synopsis}</p>
             </div>
             
             <div>
-              <h3 className="text-sm font-semibold text-gray-200 mb-2">Authors</h3>
+              <h3 className="text-sm font-semibold text-white mb-2">Authors</h3>
               <p className="text-sm text-gray-300">
                 {manga.authors.map(a => a.name).join(', ')}
               </p>

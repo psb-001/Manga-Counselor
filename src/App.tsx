@@ -29,7 +29,7 @@ export default function App() {
   } = useRecommendations();
 
   return (
-    <div className="min-h-screen bg-zinc-900">
+    <div className="min-h-screen bg-black">
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-6">
