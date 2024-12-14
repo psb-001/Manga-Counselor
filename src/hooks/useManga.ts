@@ -1,16 +1,10 @@
 import { useEffect } from 'react';
 import { useApi } from './useApi';
 import { mangaService } from '../services/mangaService';
+import { genreService } from '../services/genreService';
 import { Manga, Genre } from '../types/manga';
 
 export const useManga = () => {
-  const {
-    data: trendingManga,
-    error: trendingError,
-    isLoading: trendingLoading,
-    execute: executeTrending
-  } = useApi<Manga[]>([], { retryCount: 3 });
-
   const {
     data: popularManga,
     error: popularError,
@@ -23,49 +17,29 @@ export const useManga = () => {
     error: genresError,
     isLoading: genresLoading,
     execute: executeGenres
-  } = useApi<Genre[]>([], { retryCount: 3 });
-
-  const {
-    data: recommendations,
-    error: recommendationsError,
-    isLoading: recommendationsLoading,
-    execute: executeRecommendations
-  } = useApi<Manga[]>([], { retryCount: 2 });
+  } = useApi<Genre[]>([], { 
+    retryCount: 3,
+    onError: (error) => {
+      console.error('Failed to fetch genres:', error);
+    }
+  });
 
   useEffect(() => {
     const loadInitialData = async () => {
       await Promise.all([
-        executeTrending(() => mangaService.getTrending()),
         executePopular(() => mangaService.getPopular()),
-        executeGenres(() => mangaService.getGenres())
+        executeGenres(() => genreService.getGenres())
       ]);
     };
     loadInitialData();
   }, []);
 
-  const getRecommendations = async (filters: {
-    genre: string;
-    year: string;
-    rating: string;
-  }) => {
-    return executeRecommendations(() => 
-      mangaService.getRecommendations(filters)
-    );
-  };
-
   return {
-    trendingManga,
-    trendingError,
-    trendingLoading,
     popularManga,
     popularError,
     popularLoading,
     genres,
     genresError,
     genresLoading,
-    recommendations,
-    recommendationsError,
-    recommendationsLoading,
-    getRecommendations
   };
 };

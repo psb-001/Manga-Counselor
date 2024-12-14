@@ -1,7 +1,7 @@
 import React from 'react';
 import { BookOpen, BookmarkIcon, Compass } from 'lucide-react';
 
-type TabType = 'popular' | 'readlater' | 'discover';
+export type TabType = 'discover' | 'popular' | 'readlater';
 
 interface TabNavigationProps {
   activeTab: TabType;
@@ -10,27 +10,27 @@ interface TabNavigationProps {
 
 export const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
   const tabs = [
-    { id: 'discover', label: 'Discover', icon: Compass, japanese: '発見' },
-    { id: 'popular', label: 'Popular Manga', icon: BookOpen, japanese: '人気マンガ' },
-    { id: 'readlater', label: 'Read Later', icon: BookmarkIcon, japanese: '後で読む' },
-  ] as const;
+    { id: 'discover' as const, label: 'Discover', icon: Compass, japanese: '発見' },
+    { id: 'popular' as const, label: 'Popular', icon: BookOpen, japanese: '人気マンガ' },
+    { id: 'readlater' as const, label: 'Read Later', icon: BookmarkIcon, japanese: '後で読む' },
+  ];
 
   return (
-    <div className="bg-white rounded-lg shadow-sm mb-6">
+    <div className="bg-zinc-800 rounded-lg shadow-lg mb-6">
       <div className="flex">
         {tabs.map(tab => (
           <button
             key={tab.id}
-            onClick={() => onTabChange(tab.id as TabType)}
+            onClick={() => onTabChange(tab.id)}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 ${
               activeTab === tab.id
-                ? 'text-red-500 border-b-2 border-red-500'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'text-red-400 border-b-2 border-red-400'
+                : 'text-gray-300 hover:text-white'
             }`}
           >
             <tab.icon className="w-5 h-5" />
             <span className="font-medium">{tab.label}</span>
-            <span className="text-sm text-gray-500 hidden md:inline japanese-text">
+            <span className="text-sm text-gray-400 hidden md:inline japanese-text">
               {tab.japanese}
             </span>
           </button>

@@ -5,13 +5,13 @@ import { MangaDetails } from './components/manga/MangaDetails';
 import { PopularMangaGrid } from './components/manga/PopularMangaGrid';
 import { ReadLaterList } from './components/manga/ReadLaterList';
 import { DiscoverSection } from './components/manga/DiscoverSection';
-import { TabNavigation } from './components/navigation/TabNavigation';
+import { TabNavigation, TabType } from './components/navigation/TabNavigation';
 import { ErrorAlert } from './components/common/ErrorAlert';
 import { useManga } from './hooks/useManga';
 import { useRecommendations } from './hooks/useRecommendations';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'popular' | 'readlater' | 'discover'>('discover');
+  const [activeTab, setActiveTab] = useState<TabType>('discover');
   const [selectedManga, setSelectedManga] = useState<Manga | null>(null);
 
   const {
@@ -29,7 +29,7 @@ export default function App() {
   } = useRecommendations();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zinc-900">
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-6">

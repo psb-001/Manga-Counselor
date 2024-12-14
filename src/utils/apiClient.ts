@@ -1,32 +1,24 @@
+import { ApiError } from './errors';
+import { RateLimiter } from './rateLimiter';
+
 const BASE_URL = 'https://api.jikan.moe/v4';
-const RATE_LIMIT_DELAY = 1000; // 1 second delay between requests
+const rateLimiter = new RateLimiter(1000); // 1 request per second
 
-let lastRequestTime = 0;
-
-const waitForRateLimit = async () => {
-  const now = Date.now();
-  const timeSinceLastRequest = now - lastRequestTime;
-  
-  if (timeSinceLastRequest < RATE_LIMIT_DELAY) {
-    await new Promise(resolve => 
-      setTimeout(resolve, RATE_LIMIT_DELAY - timeSinceLastRequest)
+async function handleApiResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new ApiError(
+      response.status,
+      errorData.message || `API Error: ${response.status} ${response.statusText}`
     );
   }
   
-  lastRequestTime = Date.now();
-};
-
-const handleApiResponse = async (response: Response) => {
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `API Error: ${response.status} ${response.statusText}`);
-  }
   const data = await response.json();
   return data?.data || [];
-};
+}
 
-export const apiGet = async <T>(endpoint: string, params: Record<string, string> = {}): Promise<T> => {
-  await waitForRateLimit();
+export async function apiGet<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+  await rateLimiter.waitForNext();
   
   const queryString = new URLSearchParams(
     Object.entries(params).filter(([_, value]) => value !== '')
@@ -36,9 +28,11 @@ export const apiGet = async <T>(endpoint: string, params: Record<string, string>
   
   try {
     const response = await fetch(url);
-    return handleApiResponse(response);
+    return handleApiResponse<T>(response);
   } catch (error) {
-    console.error('API request failed:', url, error);
-    throw new Error('Failed to fetch data from the API');
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(500, 'Failed to fetch data from the API');
   }
-};
+}

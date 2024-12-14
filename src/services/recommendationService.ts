@@ -2,11 +2,11 @@ import { apiGet } from '../utils/apiClient';
 import { Manga } from '../types/manga';
 import { RecommendationFilters } from '../types/filters';
 
-export const recommendationService = {
-  getRecommendations: async (filters: RecommendationFilters, page: number = 1): Promise<Manga[]> => {
+class RecommendationService {
+  async getRecommendations(filters: RecommendationFilters, page: number = 1): Promise<Manga[]> {
     const params: Record<string, string> = {
       sfw: 'true',
-      limit: '10', // Request more items to ensure we get enough unique ones
+      limit: '10',
       order_by: 'score',
       sort: 'desc',
       page: page.toString(),
@@ -17,10 +17,8 @@ export const recommendationService = {
     }
 
     if (filters.year) {
-      const startDate = `${filters.year}-01-01`;
-      const endDate = `${filters.year}-12-31`;
-      params.start_date = startDate;
-      params.end_date = endDate;
+      params.start_date = `${filters.year}-01-01`;
+      params.end_date = `${filters.year}-12-31`;
     }
 
     if (filters.rating) {
@@ -28,5 +26,7 @@ export const recommendationService = {
     }
 
     return apiGet<Manga[]>('/manga', params);
-  },
-};
+  }
+}
+
+export const recommendationService = new RecommendationService();
