@@ -10,7 +10,7 @@ interface MangaDetailsProps {
 export const MangaDetails: React.FC<MangaDetailsProps> = ({ manga, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-zinc-900 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-zinc-900 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-zinc-800">
         <div className="sticky top-0 bg-zinc-900 p-4 border-b border-zinc-800 flex justify-between items-center">
           <h2 className="text-xl font-bold text-white">{manga.title}</h2>
           <button

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Manga } from './types/manga';
 import { Header } from './components/layout/Header';
+import { Footer } from './components/layout/Footer/Footer';
 import { MangaDetails } from './components/manga/MangaDetails';
 import { PopularMangaGrid } from './components/manga/PopularMangaGrid';
 import { ReadLaterList } from './components/manga/ReadLaterList';
@@ -29,10 +30,10 @@ export default function App() {
   } = useRecommendations();
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black flex flex-col">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full">
         <ErrorAlert error={popularError || recommendationsError} />
         <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
@@ -58,6 +59,8 @@ export default function App() {
           <ReadLaterList onMangaSelect={setSelectedManga} />
         )}
       </main>
+
+      <Footer />
 
       {selectedManga && (
         <MangaDetails

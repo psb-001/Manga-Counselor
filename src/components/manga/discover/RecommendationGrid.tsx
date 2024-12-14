@@ -24,8 +24,8 @@ export const RecommendationGrid: React.FC<RecommendationGridProps> = ({
 
   if (manga.length === 0) {
     return (
-      <div className="text-center py-12 bg-white rounded-lg">
-        <p className="text-gray-500">
+      <div className="text-center py-12 bg-zinc-900/50 rounded-lg border border-zinc-800">
+        <p className="text-gray-400">
           Use the filters above to discover new manga recommendations
         </p>
       </div>
