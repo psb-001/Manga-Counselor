@@ -18,7 +18,8 @@ const waitForRateLimit = async () => {
 
 const handleApiResponse = async (response: Response) => {
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `API Error: ${response.status} ${response.statusText}`);
   }
   const data = await response.json();
   return data?.data || [];
@@ -32,6 +33,12 @@ export const apiGet = async <T>(endpoint: string, params: Record<string, string>
   ).toString();
   
   const url = `${BASE_URL}${endpoint}${queryString ? `?${queryString}` : ''}`;
-  const response = await fetch(url);
-  return handleApiResponse(response);
+  
+  try {
+    const response = await fetch(url);
+    return handleApiResponse(response);
+  } catch (error) {
+    console.error('API request failed:', url, error);
+    throw new Error('Failed to fetch data from the API');
+  }
 };
