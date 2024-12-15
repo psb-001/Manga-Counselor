@@ -3,8 +3,7 @@ import { TopSection } from './components/TopSection';
 import { BottomSection } from './components/BottomSection';
 import { MobileMenu } from './components/MobileMenu';
 import { FooterBranding } from './sections/FooterBranding';
-import { SocialLinks } from './sections/SocialLinks';
-import { FooterNewsletter } from './sections/FooterNewsletter';
+import { SocialLinks } from './components/SocialLinks';
 import { FooterSection } from './types';
 
 export const Footer: React.FC = () => {
@@ -18,10 +17,6 @@ export const Footer: React.FC = () => {
     {
       title: 'Connect',
       content: <SocialLinks />
-    },
-    {
-      title: 'Newsletter',
-      content: <FooterNewsletter />
     }
   ];
 
@@ -29,26 +24,19 @@ export const Footer: React.FC = () => {
     <footer className="mt-auto bg-gradient-to-b from-black to-zinc-900 border-t border-zinc-800/50">
       <div className="relative w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Desktop View */}
-          <div className="hidden lg:block">
+          {/* Main Content - Responsive for both mobile and desktop */}
+          <div className="py-6 lg:py-8">
             <TopSection />
+            <BottomSection />
           </div>
 
-          {/* Mobile View */}
-          <div className="lg:hidden py-8">
-            <FooterBranding />
-          </div>
-
-          {/* Bottom Section (visible on all screens) */}
-          <BottomSection />
+          {/* Mobile Menu */}
+          <MobileMenu
+            sections={footerSections}
+            isOpen={isMobileMenuOpen}
+            onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          />
         </div>
-
-        {/* Mobile Menu */}
-        <MobileMenu
-          sections={footerSections}
-          isOpen={isMobileMenuOpen}
-          onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        />
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 pointer-events-none">
