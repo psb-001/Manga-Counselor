@@ -1,45 +1,48 @@
 import React from 'react';
 import { Github, Twitter } from 'lucide-react';
+import { SocialLink } from '../components/SocialLink';
+import { FooterLink } from '../components/FooterLink';
+
+const socialLinks = [
+  { href: 'https://github.com', icon: Github, label: 'GitHub' },
+  { href: 'https://twitter.com', icon: Twitter, label: 'Twitter' }
+];
+
+const footerLinks = [
+  { href: '/privacy', label: 'Privacy' },
+  { href: '/terms', label: 'Terms' },
+  { href: '/cookies', label: 'Cookies' },
+  { href: '/sitemap', label: 'Sitemap' }
+];
 
 export const FooterBottom: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="relative mt-12 pt-8 border-t border-zinc-800">
-      <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
-      
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-6">
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-zinc-400 hover:text-white transition-colors"
-          >
-            <Github className="w-5 h-5" />
-          </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-zinc-400 hover:text-white transition-colors"
-          >
-            <Twitter className="w-5 h-5" />
-          </a>
+    <div className="py-8 border-t border-zinc-800/50">
+      <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        {/* Social Links */}
+        <div className="flex items-center space-x-6">
+          {socialLinks.map((link) => (
+            <SocialLink key={link.label} {...link} />
+          ))}
         </div>
 
-        <div className="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-2 text-sm text-zinc-400">
-          <a href="/privacy" className="hover:text-white transition-colors">Privacy</a>
-          <a href="/terms" className="hover:text-white transition-colors">Terms</a>
-          <a href="/cookies" className="hover:text-white transition-colors">Cookies</a>
-          <a href="/sitemap" className="hover:text-white transition-colors">Sitemap</a>
+        {/* Links */}
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-zinc-400">
+          {footerLinks.map((link) => (
+            <FooterLink key={link.label} href={link.href}>
+              {link.label}
+            </FooterLink>
+          ))}
         </div>
 
-        <p className="text-sm text-zinc-600">
+        {/* Copyright */}
+        <div className="md:ml-auto text-sm text-zinc-600 text-center md:text-right whitespace-nowrap">
           © {currentYear} マンガハブ
           <span className="mx-2">•</span>
           <span className="japanese-text">全著作権所有</span>
-        </p>
+        </div>
       </div>
     </div>
   );

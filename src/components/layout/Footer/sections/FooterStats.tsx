@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, BookOpen, Star } from 'lucide-react';
+import { StatCard } from '../components/StatCard';
 
 const stats = [
   { 
@@ -27,18 +28,9 @@ const stats = [
 
 export const FooterStats: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      {stats.map(({ icon: Icon, label, value, japanese, color }) => (
-        <div
-          key={label}
-          className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-lg p-4
-            hover:bg-zinc-900 transition-colors duration-200"
-        >
-          <Icon className={`w-5 h-5 ${color} mb-2`} />
-          <p className="text-xl font-bold text-white">{value}</p>
-          <p className="text-sm text-zinc-400">{label}</p>
-          <p className="text-xs text-zinc-600 japanese-text">{japanese}</p>
-        </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {stats.map((stat) => (
+        <StatCard key={stat.label} {...stat} />
       ))}
     </div>
   );
