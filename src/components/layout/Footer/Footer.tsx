@@ -1,27 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { TopSection } from './components/TopSection';
+import { BottomSection } from './components/BottomSection';
+import { MobileMenu } from './components/MobileMenu';
 import { FooterBranding } from './sections/FooterBranding';
+import { SocialLinks } from './sections/SocialLinks';
 import { FooterNewsletter } from './sections/FooterNewsletter';
-import { FooterBottom } from './sections/FooterBottom';
+import { FooterSection } from './types';
 
 export const Footer: React.FC = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const footerSections: FooterSection[] = [
+    {
+      title: 'About',
+      content: <FooterBranding />
+    },
+    {
+      title: 'Connect',
+      content: <SocialLinks />
+    },
+    {
+      title: 'Newsletter',
+      content: <FooterNewsletter />
+    }
+  ];
+
   return (
     <footer className="mt-auto bg-gradient-to-b from-black to-zinc-900 border-t border-zinc-800/50">
       <div className="relative w-full">
-        {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Top Section */}
-          <div className="py-12 lg:py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <FooterBranding />
-              <div className="w-full lg:max-w-md lg:ml-auto">
-                <FooterNewsletter />
-              </div>
-            </div>
+          {/* Desktop View */}
+          <div className="hidden lg:block">
+            <TopSection />
           </div>
 
-          {/* Bottom Section */}
-          <FooterBottom />
+          {/* Mobile View */}
+          <div className="lg:hidden py-8">
+            <FooterBranding />
+          </div>
+
+          {/* Bottom Section (visible on all screens) */}
+          <BottomSection />
         </div>
+
+        {/* Mobile Menu */}
+        <MobileMenu
+          sections={footerSections}
+          isOpen={isMobileMenuOpen}
+          onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        />
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 pointer-events-none">

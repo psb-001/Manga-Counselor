@@ -20,11 +20,6 @@ export const FooterBranding: React.FC = () => {
         Your gateway to the fascinating world of manga. We help you discover 
         stories that resonate with your interests and keep track of your reading journey.
       </p>
-      
-      <p className="text-sm text-zinc-600 japanese-text leading-relaxed">
-        マンガの魅力的な世界への入り口。あなたの興味に合った物語を見つけ、
-        読書の旅を記録するお手伝いをします。
-      </p>
     </div>
   );
 };

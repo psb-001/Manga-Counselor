@@ -17,10 +17,6 @@ export const About: React.FC = () => {
           Your ultimate destination for discovering and tracking manga. We help you find 
           your next favorite series and keep track of your reading progress.
         </p>
-        <p className="text-sm text-zinc-600 japanese-text leading-relaxed">
-          マンガを発見し、追跡するための究極の目的地。
-          次のお気に入りシリーズを見つけ、読書の進捗状況を把握するお手伝いをします。
-        </p>
       </div>
     </div>
   );
