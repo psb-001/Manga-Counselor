@@ -22,7 +22,7 @@ export const DiscoverSection: React.FC<DiscoverSectionProps> = ({
 }) => {
   const [filters, setFilters] = useState<RecommendationFilters>({
     genre: '',
-    year: '',
+    decade: '',
     rating: '',
   });
 
@@ -52,7 +52,8 @@ export const DiscoverSection: React.FC<DiscoverSectionProps> = ({
           <button
             onClick={handleSearch}
             disabled={isLoading}
-            className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 
+              transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Find Manga
           </button>
@@ -60,7 +61,8 @@ export const DiscoverSection: React.FC<DiscoverSectionProps> = ({
             <button
               onClick={handleRefresh}
               disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white 
+                disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               <span>Refresh</span>

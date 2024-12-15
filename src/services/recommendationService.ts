@@ -3,6 +3,14 @@ import { Manga } from '../types/manga';
 import { RecommendationFilters } from '../types/filters';
 
 class RecommendationService {
+  private getDateRangeForDecade(decade: string): { start: string; end: string } {
+    const decadeStart = parseInt(decade);
+    return {
+      start: `${decadeStart}-01-01`,
+      end: `${decadeStart + 9}-12-31`
+    };
+  }
+
   async getRecommendations(filters: RecommendationFilters, page: number = 1): Promise<Manga[]> {
     const params: Record<string, string> = {
       sfw: 'true',
@@ -16,16 +24,18 @@ class RecommendationService {
       params.genres = filters.genre;
     }
 
-    if (filters.year) {
-      params.start_date = `${filters.year}-01-01`;
-      params.end_date = `${filters.year}-12-31`;
+    if (filters.decade) {
+      const { start, end } = this.getDateRangeForDecade(filters.decade);
+      params.start_date = start;
+      params.end_date = end;
     }
 
     if (filters.rating) {
       params.rating = filters.rating;
     }
 
-    return apiGet<Manga[]>('/manga', params);
+    const response = await apiGet<Manga[]>('/manga', params);
+    return response.data;
   }
 }
 

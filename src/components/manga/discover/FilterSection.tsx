@@ -1,6 +1,7 @@
 import React from 'react';
 import { FilterSelect } from '../../common/FilterSelect';
-import { YEARS, RATINGS } from '../../../constants/filterOptions';
+import { DECADES } from '../../../constants/decades';
+import { RATINGS } from '../../../constants/ratings';
 import { RecommendationFilters } from '../../../types/filters';
 import { Genre } from '../../../types/manga';
 
@@ -37,13 +38,13 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
 
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-2 japanese-text">
-          年 (Year)
+          年代 (Decade)
         </label>
         <FilterSelect
-          value={filters.year}
-          onChange={(value) => onFilterChange({ ...filters, year: value })}
-          options={YEARS}
-          placeholder="Select Year"
+          value={filters.decade}
+          onChange={(value) => onFilterChange({ ...filters, decade: value })}
+          options={DECADES}
+          placeholder="Select Decade"
         />
       </div>
 
