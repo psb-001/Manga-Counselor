@@ -1,10 +1,11 @@
 import { ApiError } from './errors';
 import { RateLimiter } from './rateLimiter';
+import { ApiResponse } from '../types/manga';
 
 const BASE_URL = 'https://api.jikan.moe/v4';
-const rateLimiter = new RateLimiter(1000, 3, 1.5); // 1 request per second, 3 retries, 1.5x backoff
+const rateLimiter = new RateLimiter(1000, 3, 1.5);
 
-async function handleApiResponse<T>(response: Response): Promise<T> {
+async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new ApiError(
@@ -14,10 +15,10 @@ async function handleApiResponse<T>(response: Response): Promise<T> {
   }
   
   const data = await response.json();
-  return data?.data || [];
+  return data as ApiResponse<T>;
 }
 
-export async function apiGet<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+export async function apiGet<T>(endpoint: string, params: Record<string, string> = {}): Promise<ApiResponse<T>> {
   const queryString = new URLSearchParams(
     Object.entries(params).filter(([_, value]) => value !== '')
   ).toString();
