@@ -1,9 +1,13 @@
+import { API_CONFIG } from '../config/api.config';
 import { ApiError } from './errors';
 import { RateLimiter } from './rateLimiter';
 import { ApiResponse } from '../types/manga';
 
-const BASE_URL = 'https://api.jikan.moe/v4';
-const rateLimiter = new RateLimiter(1000, 3, 1.5);
+const rateLimiter = new RateLimiter(
+  API_CONFIG.RATE_LIMIT.DELAY_MS,
+  API_CONFIG.RATE_LIMIT.MAX_RETRIES,
+  API_CONFIG.RATE_LIMIT.BACKOFF_FACTOR
+);
 
 async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
   if (!response.ok) {
@@ -23,11 +27,21 @@ export async function apiGet<T>(endpoint: string, params: Record<string, string>
     Object.entries(params).filter(([_, value]) => value !== '')
   ).toString();
   
-  const url = `${BASE_URL}${endpoint}${queryString ? `?${queryString}` : ''}`;
+  const url = `${API_CONFIG.BASE_URL}${endpoint}${queryString ? `?${queryString}` : ''}`;
+  
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json'
+  };
+
+  // Add API key if it exists in environment variables
+  const apiKey = import.meta.env.VITE_API_KEY;
+  if (apiKey) {
+    headers['Authorization'] = `Bearer ${apiKey}`;
+  }
   
   return rateLimiter.executeWithRetry(async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, { headers });
       return handleApiResponse<T>(response);
     } catch (error) {
       if (error instanceof ApiError) {

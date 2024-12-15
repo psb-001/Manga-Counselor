@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Star, BookmarkPlus, Info } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Star, BookmarkPlus, Info, Check } from 'lucide-react';
 import { Manga } from '../../types/manga';
-import { saveManga } from '../../utils/storage';
+import { saveManga, getSavedManga } from '../../utils/storage';
 
 interface MangaCardProps {
   manga: Manga;
@@ -10,6 +10,17 @@ interface MangaCardProps {
 
 export const MangaCard: React.FC<MangaCardProps> = ({ manga, onMoreInfo }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    const savedManga = getSavedManga();
+    setIsSaved(savedManga.some(m => m.mal_id === manga.mal_id));
+  }, [manga.mal_id]);
+
+  const handleSave = () => {
+    saveManga(manga);
+    setIsSaved(true);
+  };
 
   return (
     <div 
@@ -17,9 +28,16 @@ export const MangaCard: React.FC<MangaCardProps> = ({ manga, onMoreInfo }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="absolute top-2 right-2 z-10 bg-black/70 px-2 py-1 rounded-full flex items-center">
-        <Star className="w-3 h-3 text-yellow-400 mr-1" />
-        <span className="text-xs text-white font-medium">{manga.score}</span>
+      <div className="absolute top-2 right-2 z-10 flex gap-2">
+        <div className="bg-black/70 px-2 py-1 rounded-full flex items-center">
+          <Star className="w-3 h-3 text-yellow-400 mr-1" />
+          <span className="text-xs text-white font-medium">{manga.score}</span>
+        </div>
+        {isSaved && (
+          <div className="bg-green-500/90 px-2 py-1 rounded-full flex items-center">
+            <Check className="w-3 h-3 text-white" />
+          </div>
+        )}
       </div>
       
       <div className="aspect-[3/4] relative">
@@ -39,11 +57,20 @@ export const MangaCard: React.FC<MangaCardProps> = ({ manga, onMoreInfo }) => {
             
             <div className="flex justify-center gap-2">
               <button
-                onClick={() => saveManga(manga)}
-                className="bg-zinc-800 hover:bg-zinc-700 text-white p-2 rounded-full"
-                title="Save for later"
+                onClick={handleSave}
+                disabled={isSaved}
+                className={`p-2 rounded-full transition-colors ${
+                  isSaved 
+                    ? 'bg-green-500/20 text-green-400 cursor-not-allowed'
+                    : 'bg-zinc-800 hover:bg-zinc-700 text-white'
+                }`}
+                title={isSaved ? 'Already saved' : 'Save for later'}
               >
-                <BookmarkPlus className="w-4 h-4" />
+                {isSaved ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <BookmarkPlus className="w-4 h-4" />
+                )}
               </button>
               <button
                 onClick={() => onMoreInfo(manga)}

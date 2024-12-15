@@ -1,7 +1,6 @@
 import React from 'react';
 import { FooterBranding } from './sections/FooterBranding';
 import { FooterNewsletter } from './sections/FooterNewsletter';
-import { FooterStats } from './sections/FooterStats';
 import { FooterBottom } from './sections/FooterBottom';
 
 export const Footer: React.FC = () => {
@@ -18,11 +17,6 @@ export const Footer: React.FC = () => {
                 <FooterNewsletter />
               </div>
             </div>
-          </div>
-
-          {/* Stats Section */}
-          <div className="py-12 border-t border-zinc-800/50">
-            <FooterStats />
           </div>
 
           {/* Bottom Section */}
