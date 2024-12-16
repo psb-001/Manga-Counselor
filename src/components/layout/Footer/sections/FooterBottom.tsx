@@ -39,7 +39,7 @@ export const FooterBottom: React.FC = () => {
 
         {/* Copyright */}
         <div className="md:ml-auto text-sm text-zinc-600 text-center md:text-right whitespace-nowrap">
-          © {currentYear} マンガハブ
+          © {currentYear} マンガカウンセラー
           <span className="mx-2">•</span>
           <span className="japanese-text">全著作権所有</span>
         </div>
