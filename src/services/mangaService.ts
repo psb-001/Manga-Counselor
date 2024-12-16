@@ -11,6 +11,14 @@ class MangaService {
     });
   }
 
+  async searchManga(query: string): Promise<ApiResponse<Manga[]>> {
+    return apiGet<Manga[]>('/manga', {
+      q: query,
+      sfw: 'true',
+      limit: '5',
+    });
+  }
+
   async getRecommendations(params: { genre?: string; year?: string; rating?: string }): Promise<ApiResponse<Manga[]>> {
     return apiGet<Manga[]>('/manga', { 
       sfw: 'true',
