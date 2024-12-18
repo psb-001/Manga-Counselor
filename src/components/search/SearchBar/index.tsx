@@ -1,46 +1,31 @@
 import React, { useState } from 'react';
-import { useSearchHandlers } from './useSearchHandlers';
 import { SearchInput } from './SearchInput';
+import { SearchSuggestions } from './SearchSuggestions';
+import { useSearchBar } from './useSearchBar';
 import { SearchResultsPage } from '../SearchResultsPage';
 import { MangaDetails } from '../../manga/MangaDetails';
-import { useSearch } from '../../../hooks/useSearch';
 import { Manga } from '../../../types/manga';
 
 export const SearchBar: React.FC = () => {
   const [selectedManga, setSelectedManga] = useState<Manga | null>(null);
-  const [showResults, setShowResults] = useState(false);
   
   const {
     query,
     results,
     isLoading,
-    setQuery,
-    clearSearch
-  } = useSearch();
-
-  const {
     isExpanded,
+    showResults,
+    showSuggestions,
     handlers
-  } = useSearchHandlers({
-    query,
-    setQuery,
-    clearSearch,
-    onShowResults: () => setShowResults(true),
-    onHideResults: () => setShowResults(false)
-  });
+  } = useSearchBar();
 
   const handleMangaSelect = (manga: Manga) => {
     setSelectedManga(manga);
-    // Keep the search results visible
-  };
-
-  const handleCloseDetails = () => {
-    setSelectedManga(null);
-    // Keep the search results visible
+    handlers.onClear();
   };
 
   return (
-    <>
+    <div className="relative">
       <SearchInput
         query={query}
         isExpanded={isExpanded}
@@ -48,12 +33,18 @@ export const SearchBar: React.FC = () => {
         {...handlers}
       />
 
+      <SearchSuggestions
+        results={results}
+        onSelect={handleMangaSelect}
+        isVisible={showSuggestions}
+      />
+
       {showResults && (
         <SearchResultsPage
           query={query}
           results={results}
           isLoading={isLoading}
-          onBack={() => setShowResults(false)}
+          onBack={handlers.onHideResults}
           onMangaSelect={handleMangaSelect}
         />
       )}
@@ -61,9 +52,9 @@ export const SearchBar: React.FC = () => {
       {selectedManga && (
         <MangaDetails
           manga={selectedManga}
-          onClose={handleCloseDetails}
+          onClose={() => setSelectedManga(null)}
         />
       )}
-    </>
+    </div>
   );
 };

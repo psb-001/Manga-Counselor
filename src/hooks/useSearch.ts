@@ -17,21 +17,18 @@ export const useSearch = () => {
       return;
     }
 
-    // Cancel previous request if it exists
     if (abortController) {
       abortController.abort();
     }
 
-    // Create new abort controller for this request
     const newAbortController = new AbortController();
     setAbortController(newAbortController);
 
     setIsLoading(true);
     try {
       const response = await mangaService.searchManga(searchQuery);
-      // Only update results if this is still the current search
       if (!newAbortController.signal.aborted) {
-        setResults(response.data.slice(0, 5));
+        setResults(response.data);
       }
     } catch (error) {
       if (!newAbortController.signal.aborted) {
@@ -47,7 +44,6 @@ export const useSearch = () => {
 
   useEffect(() => {
     searchManga(debouncedQuery);
-    
     return () => {
       if (abortController) {
         abortController.abort();
