@@ -11,11 +11,19 @@ const rateLimiter = new RateLimiter(
 
 async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new ApiError(
-      response.status,
-      errorData.message || `API Error: ${response.status} ${response.statusText}`
-    );
+    if (response.status === 429) {
+      throw new ApiError(429, 'Rate limit exceeded. Please try again in a moment.');
+    }
+    
+    let errorMessage: string;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || `API Error: ${response.status} ${response.statusText}`;
+    } catch {
+      errorMessage = `API Error: ${response.status} ${response.statusText}`;
+    }
+    
+    throw new ApiError(response.status, errorMessage);
   }
   
   const data = await response.json();
@@ -29,25 +37,26 @@ export async function apiGet<T>(endpoint: string, params: Record<string, string>
   
   const url = `${API_CONFIG.BASE_URL}${endpoint}${queryString ? `?${queryString}` : ''}`;
   
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json'
-  };
-
-  // Add API key if it exists in environment variables
-  const apiKey = import.meta.env.VITE_API_KEY;
-  if (apiKey) {
-    headers['Authorization'] = `Bearer ${apiKey}`;
-  }
-  
   return rateLimiter.executeWithRetry(async () => {
     try {
-      const response = await fetch(url, { headers });
+      const response = await fetch(url, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
       return handleApiResponse<T>(response);
     } catch (error) {
+      // Network errors or other non-HTTP errors
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        throw new ApiError(503, 'Network error. Please check your connection.');
+      }
+      // Re-throw API errors
       if (error instanceof ApiError) {
         throw error;
       }
-      throw new ApiError(500, 'Failed to fetch data from the API');
+      // Unknown errors
+      throw new ApiError(500, 'An unexpected error occurred. Please try again.');
     }
   });
 }

@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { useDebounce } from './useDebounce';
 import { mangaService } from '../services/mangaService';
 import { Manga } from '../types/manga';
+import { ApiError } from '../utils/errors';
 
 export const useSearch = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Manga[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [abortController, setAbortController] = useState<AbortController | null>(null);
   
   const debouncedQuery = useDebounce(query, 300);
@@ -14,6 +16,7 @@ export const useSearch = () => {
   const searchManga = useCallback(async (searchQuery: string) => {
     if (searchQuery.length < 3) {
       setResults([]);
+      setError(null);
       return;
     }
 
@@ -25,6 +28,8 @@ export const useSearch = () => {
     setAbortController(newAbortController);
 
     setIsLoading(true);
+    setError(null);
+
     try {
       const response = await mangaService.searchManga(searchQuery);
       if (!newAbortController.signal.aborted) {
@@ -32,7 +37,10 @@ export const useSearch = () => {
       }
     } catch (error) {
       if (!newAbortController.signal.aborted) {
-        console.error('Search failed:', error);
+        const errorMessage = error instanceof ApiError 
+          ? error.message 
+          : 'Failed to search manga. Please try again.';
+        setError(errorMessage);
         setResults([]);
       }
     } finally {
@@ -54,6 +62,7 @@ export const useSearch = () => {
   const clearSearch = useCallback(() => {
     setQuery('');
     setResults([]);
+    setError(null);
     if (abortController) {
       abortController.abort();
     }
@@ -63,6 +72,7 @@ export const useSearch = () => {
     query,
     results,
     isLoading,
+    error,
     setQuery,
     clearSearch,
   };
