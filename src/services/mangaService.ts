@@ -15,7 +15,8 @@ class MangaService {
     return apiGet<Manga[]>('/manga', {
       q: query,
       sfw: 'true',
-      limit: '5',
+      limit: '25',
+      order_by: 'popularity',
     });
   }
 
@@ -24,6 +25,15 @@ class MangaService {
       sfw: 'true',
       limit: '20',
       ...params 
+    });
+  }
+
+  async getSimilarManga(genres: string[]): Promise<ApiResponse<Manga[]>> {
+    return apiGet<Manga[]>('/manga', {
+      genres: genres.join(','),
+      sfw: 'true',
+      limit: '5',
+      order_by: 'popularity'
     });
   }
 }

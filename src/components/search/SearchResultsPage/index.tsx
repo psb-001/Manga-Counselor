@@ -33,13 +33,9 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     return applyFilters(results);
   }, [results, applyFilters]);
 
-  const handleMangaSelect = (manga: Manga) => {
-    onMangaSelect(manga);
-  };
-
   const content = (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm overflow-y-auto z-40">
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-[90rem] mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
@@ -78,11 +74,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             ) : filteredResults.length > 0 ? (
               <>
                 <p className="text-sm text-zinc-400 mb-4">
-                  Showing {filteredResults.length} of {results.length} results
+                  Found {filteredResults.length} manga
                 </p>
                 <SearchResultsGrid
                   results={filteredResults}
-                  onMangaSelect={handleMangaSelect}
+                  onMangaSelect={onMangaSelect}
                 />
               </>
             ) : (
