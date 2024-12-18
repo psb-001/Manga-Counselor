@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowLeft, Search, Loader } from 'lucide-react';
 import { Manga } from '../../../types/manga';
 import { SearchResultsGrid } from './SearchResultsGrid';
@@ -20,8 +21,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   onBack,
   onMangaSelect,
 }) => {
-  return (
-    <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 overflow-y-auto">
+  const content = (
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-sm overflow-y-auto" style={{ zIndex: 9999 }}>
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -64,4 +65,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 };

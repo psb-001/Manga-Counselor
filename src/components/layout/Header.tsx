@@ -4,7 +4,7 @@ import { SearchBar } from '../search/SearchBar';
 
 export const Header = () => {
   return (
-    <header className="sticky top-0 z-50 bg-black/50 backdrop-blur-md border-b border-zinc-800/50">
+    <header className="sticky top-0 z-40 bg-black/50 backdrop-blur-md border-b border-zinc-800/50">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">

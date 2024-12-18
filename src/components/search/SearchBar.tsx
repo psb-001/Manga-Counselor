@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import { Search, X, Loader } from 'lucide-react';
 import { useSearch } from '../../hooks/useSearch';
-import { SearchInput } from './SearchInput';
-import { SearchResults } from './SearchResults';
-import { MangaDetails } from '../manga/MangaDetails';
 import { Manga } from '../../types/manga';
+import { MangaDetails } from '../manga/MangaDetails';
+import { SearchResultsPage } from './SearchResultsPage';
 
 export const SearchBar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -22,19 +22,13 @@ export const SearchBar: React.FC = () => {
 
   const handleExpand = () => {
     setIsExpanded(true);
-    if (query.length >= 3) {
-      setShowResults(true);
-    }
     setTimeout(() => inputRef.current?.focus(), 50);
   };
 
   const handleCollapse = () => {
-    setTimeout(() => {
-      if (!searchRef.current?.contains(document.activeElement)) {
-        setIsExpanded(false);
-        setShowResults(false);
-      }
-    }, 200);
+    if (!query) {
+      setIsExpanded(false);
+    }
   };
 
   const handleClear = () => {
@@ -46,11 +40,6 @@ export const SearchBar: React.FC = () => {
 
   const handleQueryChange = (value: string) => {
     setQuery(value);
-    if (value.length >= 3) {
-      setShowResults(true);
-    } else {
-      setShowResults(false);
-    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -63,41 +52,62 @@ export const SearchBar: React.FC = () => {
 
   const handleSelectManga = (manga: Manga) => {
     setSelectedManga(manga);
-    handleClear();
+    setShowResults(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowResults(false);
-        if (!query) {
-          setIsExpanded(false);
-        }
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [query]);
+  const handleBack = () => {
+    setShowResults(false);
+  };
 
   return (
-    <div ref={searchRef} className="relative z-50">
-      <SearchInput
-        query={query}
-        isExpanded={isExpanded}
-        isLoading={isLoading}
-        inputRef={inputRef}
-        onQueryChange={handleQueryChange}
-        onExpand={handleExpand}
-        onCollapse={handleCollapse}
-        onClear={handleClear}
-        onKeyDown={handleKeyDown}
-      />
+    <>
+      <div ref={searchRef} className="relative z-50">
+        <div className={`
+          flex items-center bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 
+          rounded-full overflow-hidden transition-all duration-300 ease-out
+          ${isExpanded ? 'w-[300px]' : 'w-10 hover:w-[300px] hover:border-zinc-600'}
+        `}>
+          <button
+            onClick={handleExpand}
+            className="p-2 text-zinc-400 hover:text-white transition-colors"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+          
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(e) => handleQueryChange(e.target.value)}
+            onFocus={handleExpand}
+            onBlur={handleCollapse}
+            onKeyDown={handleKeyDown}
+            placeholder="Search manga..."
+            className="flex-1 bg-transparent border-none outline-none text-white placeholder-zinc-500 text-sm px-2"
+          />
+          
+          {(isLoading || query) && (
+            <button
+              onClick={handleClear}
+              className="p-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              {isLoading ? (
+                <Loader className="w-5 h-5 animate-spin" />
+              ) : (
+                <X className="w-5 h-5" />
+              )}
+            </button>
+          )}
+        </div>
+      </div>
 
-      {showResults && results.length > 0 && (
-        <SearchResults
+      {showResults && (
+        <SearchResultsPage
+          query={query}
           results={results}
-          onSelectManga={handleSelectManga}
+          isLoading={isLoading}
+          onBack={handleBack}
+          onMangaSelect={handleSelectManga}
         />
       )}
 
@@ -107,6 +117,6 @@ export const SearchBar: React.FC = () => {
           onClose={() => setSelectedManga(null)}
         />
       )}
-    </div>
+    </>
   );
 };
