@@ -23,7 +23,10 @@ export const MangaCardOverlay: React.FC<MangaCardOverlayProps> = ({
     
     <div className="flex justify-center gap-2">
       <button
-        onClick={onSave}
+        onClick={(e) => {
+          e.stopPropagation();
+          onSave();
+        }}
         disabled={isSaved}
         className={`p-2 rounded-full transition-colors ${
           isSaved 
@@ -35,8 +38,11 @@ export const MangaCardOverlay: React.FC<MangaCardOverlayProps> = ({
         {isSaved ? <Check className="w-4 h-4" /> : <BookmarkPlus className="w-4 h-4" />}
       </button>
       <button
-        onClick={() => onMoreInfo(manga)}
-        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
+        onClick={(e) => {
+          e.stopPropagation();
+          onMoreInfo(manga);
+        }}
+        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors"
         title="More info"
       >
         <Info className="w-4 h-4" />
