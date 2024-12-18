@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowLeft, Search, Loader } from 'lucide-react';
 import { Manga } from '../../../types/manga';
 import { SearchResultsGrid } from './SearchResultsGrid';
 import { SearchFilters } from './SearchFilters';
 import { NoResults } from './NoResults';
+import { useSearchFilters } from '../../../hooks/useSearchFilters';
 
 interface SearchResultsPageProps {
   query: string;
@@ -21,8 +22,23 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   onBack,
   onMangaSelect,
 }) => {
+  const {
+    filters,
+    updateFilter,
+    resetFilters,
+    applyFilters
+  } = useSearchFilters();
+
+  const filteredResults = useMemo(() => {
+    return applyFilters(results);
+  }, [results, applyFilters]);
+
+  const handleMangaSelect = (manga: Manga) => {
+    onMangaSelect(manga);
+  };
+
   const content = (
-    <div className="fixed inset-0 bg-black/95 backdrop-blur-sm overflow-y-auto" style={{ zIndex: 9999 }}>
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-sm overflow-y-auto z-40">
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -46,7 +62,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         <div className="flex gap-6">
           {/* Filters Sidebar */}
           <div className="w-64 flex-shrink-0">
-            <SearchFilters />
+            <SearchFilters
+              filters={filters}
+              onFilterChange={updateFilter}
+              onReset={resetFilters}
+            />
           </div>
 
           {/* Results */}
@@ -55,8 +75,16 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               <div className="flex items-center justify-center py-12">
                 <Loader className="w-8 h-8 text-red-400 animate-spin" />
               </div>
-            ) : results.length > 0 ? (
-              <SearchResultsGrid results={results} onMangaSelect={onMangaSelect} />
+            ) : filteredResults.length > 0 ? (
+              <>
+                <p className="text-sm text-zinc-400 mb-4">
+                  Showing {filteredResults.length} of {results.length} results
+                </p>
+                <SearchResultsGrid
+                  results={filteredResults}
+                  onMangaSelect={handleMangaSelect}
+                />
+              </>
             ) : (
               <NoResults query={query} />
             )}

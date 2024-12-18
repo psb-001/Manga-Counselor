@@ -5,17 +5,18 @@ interface UseSearchHandlersProps {
   query: string;
   setQuery: (query: string) => void;
   clearSearch: () => void;
-  onMangaSelect: (manga: Manga) => void;
+  onShowResults: () => void;
+  onHideResults: () => void;
 }
 
 export const useSearchHandlers = ({
   query,
   setQuery,
   clearSearch,
-  onMangaSelect,
+  onShowResults,
+  onHideResults,
 }: UseSearchHandlersProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showResults, setShowResults] = useState(false);
 
   const handleExpand = () => {
     setIsExpanded(true);
@@ -29,7 +30,7 @@ export const useSearchHandlers = ({
 
   const handleClear = () => {
     clearSearch();
-    setShowResults(false);
+    onHideResults();
     setIsExpanded(false);
   };
 
@@ -41,30 +42,18 @@ export const useSearchHandlers = ({
     if (e.key === 'Escape') {
       handleClear();
     } else if (e.key === 'Enter' && query.length >= 3) {
-      setShowResults(true);
+      onShowResults();
     }
-  };
-
-  const handleSelectManga = (manga: Manga) => {
-    onMangaSelect(manga);
-    setShowResults(false);
-  };
-
-  const handleBack = () => {
-    setShowResults(false);
   };
 
   return {
     isExpanded,
-    showResults,
     handlers: {
       onExpand: handleExpand,
       onCollapse: handleCollapse,
       onClear: handleClear,
       onQueryChange: handleQueryChange,
       onKeyDown: handleKeyDown,
-      handleSelectManga,
-      handleBack,
     },
   };
 };

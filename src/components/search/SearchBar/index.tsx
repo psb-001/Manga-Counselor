@@ -8,6 +8,7 @@ import { Manga } from '../../../types/manga';
 
 export const SearchBar: React.FC = () => {
   const [selectedManga, setSelectedManga] = useState<Manga | null>(null);
+  const [showResults, setShowResults] = useState(false);
   
   const {
     query,
@@ -19,14 +20,24 @@ export const SearchBar: React.FC = () => {
 
   const {
     isExpanded,
-    showResults,
     handlers
   } = useSearchHandlers({
     query,
     setQuery,
     clearSearch,
-    onMangaSelect: setSelectedManga
+    onShowResults: () => setShowResults(true),
+    onHideResults: () => setShowResults(false)
   });
+
+  const handleMangaSelect = (manga: Manga) => {
+    setSelectedManga(manga);
+    // Keep the search results visible
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedManga(null);
+    // Keep the search results visible
+  };
 
   return (
     <>
@@ -42,15 +53,15 @@ export const SearchBar: React.FC = () => {
           query={query}
           results={results}
           isLoading={isLoading}
-          onBack={handlers.handleBack}
-          onMangaSelect={handlers.handleSelectManga}
+          onBack={() => setShowResults(false)}
+          onMangaSelect={handleMangaSelect}
         />
       )}
 
       {selectedManga && (
         <MangaDetails
           manga={selectedManga}
-          onClose={() => setSelectedManga(null)}
+          onClose={handleCloseDetails}
         />
       )}
     </>
