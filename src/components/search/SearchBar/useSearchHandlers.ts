@@ -1,24 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useSearch } from '../../hooks/useSearch';
-import { SearchInput } from './SearchInput';
-import { SearchResults } from './SearchResults';
-import { MangaDetails } from '../manga/MangaDetails';
-import { Manga } from '../../types/manga';
+import { useState, useEffect } from 'react';
+import { Manga } from '../../../types/manga';
 
-export const SearchBar: React.FC = () => {
+interface UseSearchHandlersProps {
+  searchRef: React.RefObject<HTMLDivElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
+  query: string;
+  setQuery: (query: string) => void;
+  clearSearch: () => void;
+  onMangaSelect: (manga: Manga) => void;
+}
+
+export const useSearchHandlers = ({
+  searchRef,
+  inputRef,
+  query,
+  setQuery,
+  clearSearch,
+  onMangaSelect,
+}: UseSearchHandlersProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [selectedManga, setSelectedManga] = useState<Manga | null>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  
-  const {
-    query,
-    results,
-    isLoading,
-    setQuery,
-    clearSearch
-  } = useSearch();
+  const [showFullResults, setShowFullResults] = useState(false);
 
   const handleExpand = () => {
     setIsExpanded(true);
@@ -40,6 +42,7 @@ export const SearchBar: React.FC = () => {
   const handleClear = () => {
     clearSearch();
     setShowResults(false);
+    setShowFullResults(false);
     setIsExpanded(false);
     inputRef.current?.blur();
   };
@@ -57,13 +60,19 @@ export const SearchBar: React.FC = () => {
     if (e.key === 'Escape') {
       handleClear();
     } else if (e.key === 'Enter' && query.length >= 3) {
-      setShowResults(true);
+      setShowFullResults(true);
+      setShowResults(false);
     }
   };
 
   const handleSelectManga = (manga: Manga) => {
-    setSelectedManga(manga);
+    onMangaSelect(manga);
     handleClear();
+  };
+
+  const handleBack = () => {
+    setShowFullResults(false);
+    setShowResults(true);
   };
 
   useEffect(() => {
@@ -80,33 +89,18 @@ export const SearchBar: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [query]);
 
-  return (
-    <div ref={searchRef} className="relative z-50">
-      <SearchInput
-        query={query}
-        isExpanded={isExpanded}
-        isLoading={isLoading}
-        inputRef={inputRef}
-        onQueryChange={handleQueryChange}
-        onExpand={handleExpand}
-        onCollapse={handleCollapse}
-        onClear={handleClear}
-        onKeyDown={handleKeyDown}
-      />
-
-      {showResults && results.length > 0 && (
-        <SearchResults
-          results={results}
-          onSelectManga={handleSelectManga}
-        />
-      )}
-
-      {selectedManga && (
-        <MangaDetails
-          manga={selectedManga}
-          onClose={() => setSelectedManga(null)}
-        />
-      )}
-    </div>
-  );
+  return {
+    isExpanded,
+    showResults,
+    showFullResults,
+    handlers: {
+      onExpand: handleExpand,
+      onCollapse: handleCollapse,
+      onClear: handleClear,
+      onQueryChange: handleQueryChange,
+      onKeyDown: handleKeyDown,
+      handleSelectManga,
+      handleBack,
+    },
+  };
 };
