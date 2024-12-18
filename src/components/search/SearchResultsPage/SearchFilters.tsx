@@ -1,14 +1,14 @@
 import React from 'react';
 import { SlidersHorizontal, RotateCcw } from 'lucide-react';
-import { SearchFilters } from '../../../types/search';
+import { SearchFilters as SearchFiltersType } from '../../../types/search';
 
-interface SearchFiltersProps {
-  filters: SearchFilters;
-  onFilterChange: (key: keyof SearchFilters, value: string | number) => void;
+interface SearchFiltersComponentProps {
+  filters: SearchFiltersType;
+  onFilterChange: (key: keyof SearchFiltersType, value: string | number) => void;
   onReset: () => void;
 }
 
-export const SearchFilters: React.FC<SearchFiltersProps> = ({
+export const SearchFiltersPanel: React.FC<SearchFiltersComponentProps> = ({
   filters,
   onFilterChange,
   onReset

@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { ArrowLeft, Search, Loader } from 'lucide-react';
 import { Manga } from '../../../types/manga';
 import { SearchResultsGrid } from './SearchResultsGrid';
-import { SearchFilters } from './SearchFilters';
+import { SearchFiltersPanel } from './SearchFilters';
 import { NoResults } from './NoResults';
 import { useSearchFilters } from '../../../hooks/useSearchFilters';
 
@@ -62,7 +62,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         <div className="flex gap-6">
           {/* Filters Sidebar */}
           <div className="w-64 flex-shrink-0">
-            <SearchFilters
+            <SearchFiltersPanel
               filters={filters}
               onFilterChange={updateFilter}
               onReset={resetFilters}
