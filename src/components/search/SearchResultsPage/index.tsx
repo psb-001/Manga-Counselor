@@ -5,6 +5,7 @@ import { Manga } from '../../../types/manga';
 import { SearchResultsList } from './SearchResultsList';
 import { SearchFiltersPanel } from './SearchFilters';
 import { useSearchFilters } from '../../../hooks/useSearchFilters';
+import { MangaDetails } from '../../manga/MangaDetails';
 
 interface SearchResultsPageProps {
   query: string;
@@ -21,6 +22,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   onBack,
   onMangaSelect,
 }) => {
+  const [selectedManga, setSelectedManga] = React.useState<Manga | null>(null);
+  
   const {
     filters,
     updateFilter,
@@ -31,6 +34,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const filteredResults = React.useMemo(() => {
     return applyFilters(results);
   }, [results, applyFilters]);
+
+  const handleMangaSelect = (manga: Manga) => {
+    setSelectedManga(manga);
+  };
 
   const content = (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm overflow-y-auto z-40">
@@ -74,12 +81,19 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               <SearchResultsList
                 results={filteredResults}
                 query={query}
-                onMangaSelect={onMangaSelect}
+                onMangaSelect={handleMangaSelect}
               />
             )}
           </div>
         </div>
       </div>
+
+      {selectedManga && (
+        <MangaDetails
+          manga={selectedManga}
+          onClose={() => setSelectedManga(null)}
+        />
+      )}
     </div>
   );
 

@@ -35,6 +35,7 @@ export const SearchBar: React.FC = () => {
     clearSearch();
     setShowResults(false);
     setIsExpanded(false);
+    setSelectedManga(null);
     inputRef.current?.blur();
   };
 
@@ -52,11 +53,11 @@ export const SearchBar: React.FC = () => {
 
   const handleSelectManga = (manga: Manga) => {
     setSelectedManga(manga);
-    setShowResults(false);
   };
 
   const handleBack = () => {
     setShowResults(false);
+    setSelectedManga(null);
   };
 
   return (
