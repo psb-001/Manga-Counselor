@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useSearch } from '../../../hooks/useSearch';
 
 export const useSearchBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   
   const {
     query,
@@ -17,6 +18,7 @@ export const useSearchBar = () => {
   const handleExpand = useCallback(() => {
     setIsExpanded(true);
     setShowSuggestions(true);
+    setTimeout(() => inputRef.current?.focus(), 50);
   }, []);
 
   const handleCollapse = useCallback(() => {
@@ -32,15 +34,17 @@ export const useSearchBar = () => {
     setShowResults(false);
     setShowSuggestions(false);
     setIsExpanded(false);
+    inputRef.current?.blur();
   }, [clearSearch]);
 
   const handleQueryChange = useCallback((value: string) => {
     setQuery(value);
-    setShowSuggestions(true);
-    if (showResults) {
-      setShowResults(false);
+    if (value.length >= 2) {
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
     }
-  }, [setQuery, showResults]);
+  }, [setQuery]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -58,6 +62,7 @@ export const useSearchBar = () => {
     isExpanded,
     showResults,
     showSuggestions,
+    inputRef,
     handlers: {
       onExpand: handleExpand,
       onCollapse: handleCollapse,
@@ -68,7 +73,8 @@ export const useSearchBar = () => {
         setShowResults(true);
         setShowSuggestions(false);
       },
-      onHideResults: () => setShowResults(false)
+      onHideResults: () => setShowResults(false),
+      onHideSuggestions: () => setShowSuggestions(false)
     }
   };
 };

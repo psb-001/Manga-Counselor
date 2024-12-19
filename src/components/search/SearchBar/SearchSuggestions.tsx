@@ -18,7 +18,7 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
   return (
     <div className="absolute top-full left-0 right-0 mt-2 py-2 bg-zinc-900/95 backdrop-blur-sm 
       border border-zinc-800 rounded-lg shadow-xl max-h-[80vh] overflow-y-auto animate-fadeIn">
-      {results.map((manga) => (
+      {results.slice(0, 5).map((manga) => (
         <button
           key={manga.mal_id}
           onClick={() => onSelect(manga)}
@@ -59,4 +59,4 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
       ))}
     </div>
   );
-}
+};

@@ -16,12 +16,13 @@ export const SearchBar: React.FC = () => {
     isExpanded,
     showResults,
     showSuggestions,
+    inputRef,
     handlers
   } = useSearchBar();
 
   const handleMangaSelect = (manga: Manga) => {
     setSelectedManga(manga);
-    handlers.onClear();
+    handlers.onHideSuggestions();
   };
 
   return (
@@ -30,6 +31,7 @@ export const SearchBar: React.FC = () => {
         query={query}
         isExpanded={isExpanded}
         isLoading={isLoading}
+        inputRef={inputRef}
         {...handlers}
       />
 
@@ -46,6 +48,13 @@ export const SearchBar: React.FC = () => {
           isLoading={isLoading}
           onBack={handlers.onHideResults}
           onMangaSelect={handleMangaSelect}
+          searchBarProps={{
+            query,
+            isExpanded,
+            isLoading,
+            inputRef,
+            ...handlers
+          }}
         />
       )}
 

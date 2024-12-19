@@ -5,7 +5,7 @@ import { Manga } from '../../../types/manga';
 import { SearchResultsList } from './SearchResultsList';
 import { SearchFiltersPanel } from './SearchFilters';
 import { useSearchFilters } from '../../../hooks/useSearchFilters';
-import { MangaDetails } from '../../manga/MangaDetails';
+import { SearchInput } from '../SearchBar/SearchInput';
 
 interface SearchResultsPageProps {
   query: string;
@@ -13,6 +13,7 @@ interface SearchResultsPageProps {
   isLoading: boolean;
   onBack: () => void;
   onMangaSelect: (manga: Manga) => void;
+  searchBarProps: any; // Using any for brevity, should be properly typed
 }
 
 export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
@@ -21,9 +22,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   isLoading,
   onBack,
   onMangaSelect,
+  searchBarProps
 }) => {
-  const [selectedManga, setSelectedManga] = React.useState<Manga | null>(null);
-  
   const {
     filters,
     updateFilter,
@@ -34,10 +34,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const filteredResults = React.useMemo(() => {
     return applyFilters(results);
   }, [results, applyFilters]);
-
-  const handleMangaSelect = (manga: Manga) => {
-    setSelectedManga(manga);
-  };
 
   const content = (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm overflow-y-auto z-40">
@@ -52,11 +48,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             <span>Back</span>
           </button>
           
-          <div className="flex items-center gap-3">
-            <Search className="w-5 h-5 text-zinc-500" />
-            <h1 className="text-lg sm:text-xl font-medium text-white">
-              Search results for "{query}"
-            </h1>
+          <div className="flex-1 max-w-md">
+            <SearchInput {...searchBarProps} />
           </div>
         </div>
 
@@ -81,21 +74,14 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               <SearchResultsList
                 results={filteredResults}
                 query={query}
-                onMangaSelect={handleMangaSelect}
+                onMangaSelect={onMangaSelect}
               />
             )}
           </div>
         </div>
       </div>
-
-      {selectedManga && (
-        <MangaDetails
-          manga={selectedManga}
-          onClose={() => setSelectedManga(null)}
-        />
-      )}
     </div>
   );
 
   return createPortal(content, document.body);
-}
+};
