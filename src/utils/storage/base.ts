@@ -1,7 +1,5 @@
 import { StorageOptions, StorageError } from './types';
-import { encodeData, decodeData } from '../security/encoding';
-import { xorEncrypt, xorDecrypt } from '../security/encryption';
-import { validateJSON } from '../security/sanitization';
+import { encode, decode } from './encoding';
 
 export class Storage {
   private key: string;
@@ -14,22 +12,11 @@ export class Storage {
 
   protected getData<T>(): T | null {
     try {
-      const encrypted = localStorage.getItem(this.key);
-      if (!encrypted) return null;
+      const stored = localStorage.getItem(this.key);
+      if (!stored) return null;
 
-      // First try XOR decryption
-      const decrypted = xorDecrypt(encrypted);
-      if (validateJSON(decrypted)) {
-        return JSON.parse(decrypted);
-      }
-
-      // Fallback to base64 decoding
-      const decoded = decodeData(encrypted);
-      if (validateJSON(decoded)) {
-        return JSON.parse(decoded);
-      }
-
-      throw new Error('Invalid data format');
+      const decoded = decode(stored);
+      return decoded as T;
     } catch (error) {
       console.error('Storage read error:', error);
       localStorage.removeItem(this.key);
@@ -39,23 +26,11 @@ export class Storage {
 
   protected setData<T>(data: T): void {
     try {
-      const jsonString = JSON.stringify(data);
-      
-      // Try XOR encryption first
-      try {
-        const encrypted = xorEncrypt(jsonString);
-        localStorage.setItem(this.key, encrypted);
-        return;
-      } catch (error) {
-        console.warn('XOR encryption failed, falling back to base64:', error);
-      }
-
-      // Fallback to base64 encoding
-      const encoded = encodeData(jsonString);
+      const encoded = encode(data);
       localStorage.setItem(this.key, encoded);
     } catch (error) {
       console.error('Storage write error:', error);
-      throw new StorageError('WRITE_ERROR', { cause: error });
+      throw new StorageError('WRITE_ERROR');
     }
   }
 

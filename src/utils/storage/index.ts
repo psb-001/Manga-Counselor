@@ -1,1 +1,6 @@
-export * from './mangaStorage';
+export {
+  getSavedManga,
+  saveManga,
+  updateMangaProgress,
+  removeManga
+} from './mangaStorage';

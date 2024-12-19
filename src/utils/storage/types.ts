@@ -3,7 +3,12 @@ export interface StorageOptions {
   maxItems?: number;
 }
 
-export interface StorageError extends Error {
-  code: string;
-  data?: unknown;
+export class StorageError extends Error {
+  constructor(
+    public code: 'WRITE_ERROR' | 'READ_ERROR' | 'STORAGE_LIMIT_EXCEEDED',
+    options?: ErrorOptions
+  ) {
+    super(`Storage error: ${code}`, options);
+    this.name = 'StorageError';
+  }
 }

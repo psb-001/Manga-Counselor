@@ -1,5 +1,6 @@
 import { Storage } from './base';
 import { Manga, SavedManga } from '../../types/manga';
+import { sanitizeArray } from './validation';
 
 class MangaStorage extends Storage {
   constructor() {
@@ -8,7 +9,7 @@ class MangaStorage extends Storage {
 
   getSavedManga(): SavedManga[] {
     const data = this.getData<SavedManga[]>();
-    return Array.isArray(data) ? data : [];
+    return sanitizeArray(data);
   }
 
   saveManga(manga: Manga): void {
@@ -32,7 +33,7 @@ class MangaStorage extends Storage {
     this.setData([...saved, newManga]);
   }
 
-  updateProgress(mangaId: number, chaptersRead: number): void {
+  updateMangaProgress(mangaId: number, chaptersRead: number): void {
     const saved = this.getSavedManga();
     const updated = saved.map(manga => 
       manga.mal_id === mangaId 
@@ -54,5 +55,12 @@ class MangaStorage extends Storage {
   }
 }
 
-// Export singleton instance
-export const mangaStorage = new MangaStorage();
+// Create singleton instance
+const mangaStorage = new MangaStorage();
+
+// Export storage functions
+export const getSavedManga = () => mangaStorage.getSavedManga();
+export const saveManga = (manga: Manga) => mangaStorage.saveManga(manga);
+export const updateMangaProgress = (mangaId: number, chaptersRead: number) => 
+  mangaStorage.updateMangaProgress(mangaId, chaptersRead);
+export const removeManga = (mangaId: number) => mangaStorage.removeManga(mangaId);
