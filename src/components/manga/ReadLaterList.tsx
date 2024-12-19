@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSavedManga, updateMangaProgress, removeManga } from '../../utils/storage';
+import { getSavedManga, updateMangaProgress, removeManga } from '../../utils/storage/mangaStorage';
 import { SavedManga } from '../../types/manga';
 import { ReadingProgressCard } from './readlater/ReadingProgressCard';
 import { MangaProgressCard } from './readlater/MangaProgressCard';

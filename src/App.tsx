@@ -1,9 +1,9 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LoadingSpinner } from './components/common/LoadingSpinner';
+import MainContent from './components/MainContent';
 
-// Lazy load components
-const MainContent = lazy(() => import('./components/MainContent'));
+// Lazy load pages
 const AboutPage = lazy(() => import('./pages/about/AboutPage').then(m => ({ default: m.AboutPage })));
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
 const TermsOfService = lazy(() => import('./pages/legal/TermsOfService').then(m => ({ default: m.TermsOfService })));
