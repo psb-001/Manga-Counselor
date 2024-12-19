@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowLeft, Search, Loader } from 'lucide-react';
 import { Manga } from '../../../types/manga';
-import { SearchResultsGrid } from './SearchResultsGrid';
+import { SearchResultsList } from './SearchResultsList';
 import { SearchFiltersPanel } from './SearchFilters';
-import { NoResults } from './NoResults';
 import { useSearchFilters } from '../../../hooks/useSearchFilters';
 
 interface SearchResultsPageProps {
@@ -29,7 +28,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     applyFilters
   } = useSearchFilters();
 
-  const filteredResults = useMemo(() => {
+  const filteredResults = React.useMemo(() => {
     return applyFilters(results);
   }, [results, applyFilters]);
 
@@ -71,18 +70,12 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               <div className="flex items-center justify-center py-12">
                 <Loader className="w-8 h-8 text-red-400 animate-spin" />
               </div>
-            ) : filteredResults.length > 0 ? (
-              <>
-                <p className="text-sm text-zinc-400 mb-4">
-                  Found {filteredResults.length} manga
-                </p>
-                <SearchResultsGrid
-                  results={filteredResults}
-                  onMangaSelect={onMangaSelect}
-                />
-              </>
             ) : (
-              <NoResults query={query} />
+              <SearchResultsList
+                results={filteredResults}
+                query={query}
+                onMangaSelect={onMangaSelect}
+              />
             )}
           </div>
         </div>
