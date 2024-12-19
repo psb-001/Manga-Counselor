@@ -10,8 +10,13 @@ import { TabNavigation, TabType } from './components/navigation/TabNavigation';
 import { ErrorAlert } from './components/common/ErrorAlert';
 import { useManga } from './hooks/useManga';
 import { useRecommendations } from './hooks/useRecommendations';
+import { PrivacyPolicy } from './pages/legal/PrivacyPolicy';
+import { TermsOfService } from './pages/legal/TermsOfService';
+import { CookiePolicy } from './pages/legal/CookiePolicy';
+import { AboutPage } from './pages/about/AboutPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-export default function App() {
+const MainContent = () => {
   const [activeTab, setActiveTab] = useState<TabType>('discover');
   const [selectedManga, setSelectedManga] = useState<Manga | null>(null);
 
@@ -30,9 +35,8 @@ export default function App() {
   } = useRecommendations();
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+    <>
       <Header />
-
       <main className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full">
         <ErrorAlert error={popularError || recommendationsError} />
         <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
@@ -59,7 +63,6 @@ export default function App() {
           <ReadLaterList onMangaSelect={setSelectedManga} />
         )}
       </main>
-
       <Footer />
 
       {selectedManga && (
@@ -68,6 +71,22 @@ export default function App() {
           onClose={() => setSelectedManga(null)}
         />
       )}
-    </div>
+    </>
+  );
+};
+
+export default function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-black flex flex-col">
+        <Routes>
+          <Route path="/" element={<MainContent />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/cookies" element={<CookiePolicy />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
