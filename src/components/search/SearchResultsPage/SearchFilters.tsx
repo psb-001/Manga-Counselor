@@ -28,7 +28,7 @@ export const SearchFiltersPanel: React.FC<SearchFiltersComponentProps> = ({
       </button>
     </div>
 
-    <div className="space-y-4">
+    <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
       {/* Status Filter */}
       <div>
         <label className="block text-sm text-zinc-400 mb-2">Status</label>
@@ -62,7 +62,7 @@ export const SearchFiltersPanel: React.FC<SearchFiltersComponentProps> = ({
       </div>
 
       {/* Score Range */}
-      <div>
+      <div className="col-span-2 lg:col-span-1">
         <label className="block text-sm text-zinc-400 mb-2">
           Minimum Score: {filters.minScore}
         </label>

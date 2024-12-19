@@ -36,7 +36,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm overflow-y-auto z-40">
       <div className="max-w-[90rem] mx-auto px-4 py-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -47,16 +47,16 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           
           <div className="flex items-center gap-3">
             <Search className="w-5 h-5 text-zinc-500" />
-            <h1 className="text-xl font-medium text-white">
+            <h1 className="text-lg sm:text-xl font-medium text-white">
               Search results for "{query}"
             </h1>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Filters Sidebar */}
-          <div className="w-64 flex-shrink-0">
+          <div className="w-full lg:w-64 lg:flex-shrink-0">
             <SearchFiltersPanel
               filters={filters}
               onFilterChange={updateFilter}
@@ -84,4 +84,4 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   );
 
   return createPortal(content, document.body);
-};
+}
