@@ -1,37 +1,23 @@
+import { Storage } from './base';
 import { Manga, SavedManga } from '../../types/manga';
-import { encryptData, decryptData } from '../security';
 
-const STORAGE_KEY = 'manga-readlater';
-const MAX_STORAGE_ITEMS = 1000;
-
-export const getSavedManga = (): SavedManga[] => {
-  try {
-    const encrypted = localStorage.getItem(STORAGE_KEY);
-    if (!encrypted) return [];
-    
-    const decrypted = decryptData(encrypted);
-    const parsed = JSON.parse(decrypted);
-    
-    if (!Array.isArray(parsed)) {
-      throw new Error('Invalid storage data format');
-    }
-    
-    return parsed;
-  } catch (error) {
-    console.error('Error reading from storage:', error);
-    localStorage.removeItem(STORAGE_KEY);
-    return [];
+class MangaStorage extends Storage {
+  constructor() {
+    super({ key: 'manga-readlater', maxItems: 1000 });
   }
-};
 
-export const saveManga = (manga: Manga) => {
-  try {
-    const saved = getSavedManga();
+  getSavedManga(): SavedManga[] {
+    const data = this.getData<SavedManga[]>();
+    return Array.isArray(data) ? data : [];
+  }
+
+  saveManga(manga: Manga): void {
+    const saved = this.getSavedManga();
     
-    if (saved.length >= MAX_STORAGE_ITEMS) {
-      throw new Error('Storage limit reached');
-    }
+    // Check storage limit
+    this.checkLimit(saved.length);
     
+    // Check for duplicates
     if (saved.some(m => m.mal_id === manga.mal_id)) {
       return;
     }
@@ -43,17 +29,11 @@ export const saveManga = (manga: Manga) => {
       savedAt: Date.now(),
     };
     
-    const encrypted = encryptData(JSON.stringify([...saved, newManga]));
-    localStorage.setItem(STORAGE_KEY, encrypted);
-  } catch (error) {
-    console.error('Error saving manga:', error);
-    throw error;
+    this.setData([...saved, newManga]);
   }
-};
 
-export const updateMangaProgress = (mangaId: number, chaptersRead: number) => {
-  try {
-    const saved = getSavedManga();
+  updateProgress(mangaId: number, chaptersRead: number): void {
+    const saved = this.getSavedManga();
     const updated = saved.map(manga => 
       manga.mal_id === mangaId 
         ? { 
@@ -64,23 +44,15 @@ export const updateMangaProgress = (mangaId: number, chaptersRead: number) => {
         : manga
     );
     
-    const encrypted = encryptData(JSON.stringify(updated));
-    localStorage.setItem(STORAGE_KEY, encrypted);
-  } catch (error) {
-    console.error('Error updating manga progress:', error);
-    throw error;
+    this.setData(updated);
   }
-};
 
-export const removeManga = (mangaId: number) => {
-  try {
-    const saved = getSavedManga();
+  removeManga(mangaId: number): void {
+    const saved = this.getSavedManga();
     const filtered = saved.filter(manga => manga.mal_id !== mangaId);
-    
-    const encrypted = encryptData(JSON.stringify(filtered));
-    localStorage.setItem(STORAGE_KEY, encrypted);
-  } catch (error) {
-    console.error('Error removing manga:', error);
-    throw error;
+    this.setData(filtered);
   }
-};
+}
+
+// Export singleton instance
+export const mangaStorage = new MangaStorage();
