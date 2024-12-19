@@ -1,17 +1,18 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDebounce } from './useDebounce';
 import { mangaService } from '../services/mangaService';
 import { Manga } from '../types/manga';
 import { ApiError } from '../utils/errors';
+import { sanitizeInput } from '../utils/security';
 
 export const useSearch = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Manga[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
   
-  const debouncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(sanitizeInput(query), 300);
 
   const searchManga = useCallback(async (searchQuery: string) => {
     if (searchQuery.length < 3) {
@@ -20,12 +21,12 @@ export const useSearch = () => {
       return;
     }
 
-    if (abortController) {
-      abortController.abort();
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
 
     const newAbortController = new AbortController();
-    setAbortController(newAbortController);
+    abortControllerRef.current = newAbortController;
 
     setIsLoading(true);
     setError(null);
@@ -53,8 +54,8 @@ export const useSearch = () => {
   useEffect(() => {
     searchManga(debouncedQuery);
     return () => {
-      if (abortController) {
-        abortController.abort();
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
       }
     };
   }, [debouncedQuery, searchManga]);
@@ -63,8 +64,8 @@ export const useSearch = () => {
     setQuery('');
     setResults([]);
     setError(null);
-    if (abortController) {
-      abortController.abort();
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
   }, []);
 

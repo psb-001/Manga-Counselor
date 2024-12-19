@@ -1,5 +1,11 @@
+import { ApiError } from './errors';
+
 export class RateLimiter {
-  private queue: Array<() => Promise<void>> = [];
+  private queue: Array<{
+    resolve: (value: unknown) => void;
+    reject: (error: Error) => void;
+    operation: () => Promise<unknown>;
+  }> = [];
   private isProcessing = false;
   private lastRequestTime = 0;
 
@@ -9,9 +15,18 @@ export class RateLimiter {
     private backoffFactor: number = 1.5
   ) {}
 
-  async waitForNext(): Promise<void> {
-    return new Promise((resolve) => {
-      this.queue.push(async () => {
+  private async processQueue() {
+    if (this.isProcessing || this.queue.length === 0) return;
+    
+    this.isProcessing = true;
+    
+    while (this.queue.length > 0) {
+      const request = this.queue.shift();
+      if (!request) continue;
+
+      const { resolve, reject, operation } = request;
+      
+      try {
         const now = Date.now();
         const timeSinceLastRequest = now - this.lastRequestTime;
         
@@ -22,24 +37,10 @@ export class RateLimiter {
         }
         
         this.lastRequestTime = Date.now();
-        resolve();
-      });
-
-      if (!this.isProcessing) {
-        this.processQueue();
-      }
-    });
-  }
-
-  private async processQueue() {
-    if (this.isProcessing || this.queue.length === 0) return;
-    
-    this.isProcessing = true;
-    
-    while (this.queue.length > 0) {
-      const request = this.queue.shift();
-      if (request) {
-        await request();
+        const result = await operation();
+        resolve(result);
+      } catch (error) {
+        reject(error instanceof Error ? error : new Error(String(error)));
       }
     }
     
@@ -50,16 +51,29 @@ export class RateLimiter {
     operation: () => Promise<T>,
     currentRetry: number = 0
   ): Promise<T> {
-    try {
-      await this.waitForNext();
-      return await operation();
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('429') && currentRetry < this.maxRetries) {
-        const delay = this.delayMs * Math.pow(this.backoffFactor, currentRetry);
-        await new Promise(resolve => setTimeout(resolve, delay));
-        return this.executeWithRetry(operation, currentRetry + 1);
+    return new Promise((resolve, reject) => {
+      this.queue.push({
+        resolve: resolve as (value: unknown) => void,
+        reject,
+        operation: async () => {
+          try {
+            return await operation();
+          } catch (error) {
+            if (error instanceof ApiError && 
+                error.status === 429 && 
+                currentRetry < this.maxRetries) {
+              const delay = this.delayMs * Math.pow(this.backoffFactor, currentRetry);
+              await new Promise(resolve => setTimeout(resolve, delay));
+              return this.executeWithRetry(operation, currentRetry + 1);
+            }
+            throw error;
+          }
+        }
+      });
+
+      if (!this.isProcessing) {
+        this.processQueue();
       }
-      throw error;
-    }
+    });
   }
 }
