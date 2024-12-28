@@ -1,3 +1,5 @@
+import { ENCRYPTION_KEY } from './security/encryption';
+
 // Use Base64 encoding/decoding that supports UTF-8
 function base64ToUint8Array(base64: string): Uint8Array {
   const binaryString = window.atob(base64);

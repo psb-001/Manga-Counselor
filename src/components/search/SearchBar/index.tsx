@@ -5,6 +5,7 @@ import { useSearchBar } from './useSearchBar';
 import { SearchResultsPage } from '../SearchResultsPage';
 import { MangaDetails } from '../../manga/MangaDetails';
 import { Manga } from '../../../types/manga';
+import { SearchInputProps } from './types';
 
 export const SearchBar: React.FC = () => {
   const [selectedManga, setSelectedManga] = useState<Manga | null>(null);

@@ -2,7 +2,7 @@
  * Simple XOR encryption implementation
  */
 
-const ENCRYPTION_KEY = 'manga-counselor-v1';
+export const ENCRYPTION_KEY = 'manga-counselor-v1';
 
 export function xorEncrypt(data: string): string {
   const textEncoder = new TextEncoder();
