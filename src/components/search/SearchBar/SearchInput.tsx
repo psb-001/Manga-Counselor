@@ -1,19 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Search, X, Loader } from 'lucide-react';
+import { SearchInputProps } from './types';
+import { SearchButton } from './SearchButton';
 
-interface SearchInputProps {
-  query: string;
-  isExpanded: boolean;
-  isLoading: boolean;
-  inputRef: React.RefObject<HTMLInputElement>;
-  onQueryChange: (value: string) => void;
-  onExpand: () => void;
-  onCollapse: () => void;
-  onClear: () => void;
-  onKeyDown: (e: React.KeyboardEvent) => void;
-}
-
-export const SearchInput: React.FC<SearchInputProps> = ({
+export const SearchInput: React.FC<SearchInputProps> = memo(({
   query,
   isExpanded,
   isLoading,
@@ -24,17 +14,16 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   onClear,
   onKeyDown,
 }) => (
-  <div className={`
-    flex items-center bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 
-    rounded-full overflow-hidden transition-all duration-300 ease-out
-    ${isExpanded ? 'w-[300px]' : 'w-10 hover:w-[300px] hover:border-zinc-600'}
-  `}>
-    <button
-      onClick={onExpand}
-      className="p-2 text-zinc-400 hover:text-white transition-colors"
-    >
+  <div
+    className={`
+      flex items-center bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 
+      rounded-full overflow-hidden transition-all duration-300 ease-out
+      ${isExpanded ? 'w-[300px]' : 'w-10 hover:w-[300px] hover:border-zinc-600'}
+    `}
+  >
+    <SearchButton onClick={onExpand}>
       <Search className="w-5 h-5" />
-    </button>
+    </SearchButton>
     
     <input
       ref={inputRef}
@@ -49,16 +38,15 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     />
     
     {(isLoading || query) && (
-      <button
-        onClick={onClear}
-        className="p-2 text-zinc-400 hover:text-white transition-colors"
-      >
+      <SearchButton onClick={onClear}>
         {isLoading ? (
           <Loader className="w-5 h-5 animate-spin" />
         ) : (
           <X className="w-5 h-5" />
         )}
-      </button>
+      </SearchButton>
     )}
   </div>
-);
+));
+
+SearchInput.displayName = 'SearchInput';
