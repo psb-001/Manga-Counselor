@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { RefreshCw } from 'lucide-react';
 import { Manga } from '../../types/manga';
 import { RecommendationFilters } from '../../types/filters';
 import { FilterSection } from './discover/FilterSection';
 import { RecommendationGrid } from './discover/RecommendationGrid';
+import { RefreshButton } from '../common/RefreshButton';
 
 interface DiscoverSectionProps {
   manga: Manga[];
@@ -58,15 +58,10 @@ export const DiscoverSection: React.FC<DiscoverSectionProps> = ({
             Find Manga
           </button>
           {manga.length > 0 && (
-            <button
+            <RefreshButton
               onClick={handleRefresh}
-              disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white 
-                disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-              <span>Refresh</span>
-            </button>
+              isLoading={isLoading}
+            />
           )}
         </div>
       </div>

@@ -15,7 +15,7 @@ export const useRecommendations = () => {
       setError(null);
       
       // Only fetch if at least one filter is selected
-      if (!filters.genre && !filters.year && !filters.rating) {
+      if (!filters.genre && !filters.decade && !filters.rating) {
         setRecommendations([]);
         return;
       }
@@ -32,14 +32,14 @@ export const useRecommendations = () => {
         ? data.filter(manga => !recommendations.some(rec => rec.mal_id === manga.mal_id))
         : data;
 
-      // Ensure we get exactly 3 unique recommendations
-      const limitedData = newRecommendations.slice(0, 3);
+      // Ensure we get exactly 4 unique recommendations
+      const limitedData = newRecommendations.slice(0, 4);
       
       // If we couldn't get enough new recommendations, reset page and try again
-      if (isRefresh && limitedData.length < 3) {
+      if (isRefresh && limitedData.length < 4) {
         setPage(1);
         const fallbackData = await recommendationService.getRecommendations(filters, 1);
-        setRecommendations(fallbackData.slice(0, 3));
+        setRecommendations(fallbackData.slice(0, 4));
       } else {
         setRecommendations(limitedData);
       }

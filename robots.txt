@@ -1,0 +1,22 @@
+# Manga Counselor - Robots.txt
+# https://mangacounselor.com
+
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /popular
+Allow: /discover
+Allow: /privacy
+Allow: /terms
+Allow: /cookies
+Allow: /sitemap.xml
+
+# Prevent crawling of search API endpoints
+Disallow: /api/
+Disallow: /*?q=*
+
+# Prevent crawling of user-specific pages
+Disallow: /readlater
+
+# Sitemap
+Sitemap: https://mangacounselor.com/sitemap.xml
