@@ -16,8 +16,8 @@ export const RecommendationGrid: React.FC<RecommendationGridProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <LoadingCards count={4} />
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <LoadingCards count={3} />
       </div>
     );
   }
@@ -33,8 +33,8 @@ export const RecommendationGrid: React.FC<RecommendationGridProps> = ({
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-      {manga.slice(0, 4).map(manga => (
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      {manga.slice(0, 3).map(manga => (
         <MangaCard
           key={manga.mal_id}
           manga={manga}

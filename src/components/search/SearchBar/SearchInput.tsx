@@ -1,9 +1,19 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Search, X, Loader } from 'lucide-react';
-import { SearchInputProps } from './types';
-import { SearchButton } from './SearchButton';
 
-export const SearchInput: React.FC<SearchInputProps> = memo(({
+interface SearchInputProps {
+  query: string;
+  isExpanded: boolean;
+  isLoading: boolean;
+  inputRef: React.RefObject<HTMLInputElement>;
+  onQueryChange: (value: string) => void;
+  onExpand: () => void;
+  onCollapse: () => void;
+  onClear: () => void;
+  onKeyDown: (e: React.KeyboardEvent) => void;
+}
+
+export const SearchInput: React.FC<SearchInputProps> = ({
   query,
   isExpanded,
   isLoading,
@@ -14,16 +24,17 @@ export const SearchInput: React.FC<SearchInputProps> = memo(({
   onClear,
   onKeyDown,
 }) => (
-  <div
-    className={`
-      flex items-center bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 
-      rounded-full overflow-hidden transition-all duration-300 ease-out
-      ${isExpanded ? 'w-[300px]' : 'w-10 hover:w-[300px] hover:border-zinc-600'}
-    `}
-  >
-    <SearchButton onClick={onExpand}>
+  <div className={`
+    flex items-center bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 
+    rounded-full overflow-hidden transition-all duration-300 ease-out
+    ${isExpanded ? 'w-[300px]' : 'w-10 hover:w-[300px] hover:border-zinc-600'}
+  `}>
+    <button
+      onClick={onExpand}
+      className="p-2 text-zinc-400 hover:text-white transition-colors"
+    >
       <Search className="w-5 h-5" />
-    </SearchButton>
+    </button>
     
     <input
       ref={inputRef}
@@ -38,15 +49,16 @@ export const SearchInput: React.FC<SearchInputProps> = memo(({
     />
     
     {(isLoading || query) && (
-      <SearchButton onClick={onClear}>
+      <button
+        onClick={onClear}
+        className="p-2 text-zinc-400 hover:text-white transition-colors"
+      >
         {isLoading ? (
           <Loader className="w-5 h-5 animate-spin" />
         ) : (
           <X className="w-5 h-5" />
         )}
-      </SearchButton>
+      </button>
     )}
   </div>
-));
-
-SearchInput.displayName = 'SearchInput';
+);

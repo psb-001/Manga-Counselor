@@ -1,5 +1,5 @@
 import React from 'react';
-import { LucideProps } from 'lucide-react';
+import { LucideCrop as LucideProps } from 'lucide-react';
 
 export const BlueskyIcon: React.FC<LucideProps> = (props) => (
   <svg
@@ -7,13 +7,11 @@ export const BlueskyIcon: React.FC<LucideProps> = (props) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M12 3c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 18.5 2 13 6.5 3 12 3z" />
-    <path d="M12 7v10" />
-    <path d="M8 11l4-4 4 4" />
+    <path d="M21.4 6.6C20.9 4.2 18.5 2 16.1 2c-1.6 0-3.1.9-4.1 2.4C11 2.9 9.5 2 7.9 2c-2.4 0-4.8 2.2-5.3 4.6-.6 2.8.4 5.4 2.9 7.5l5.5 5.5c.6.6 1.5.6 2.1 0l5.5-5.5c2.4-2.1 3.4-4.7 2.8-7.5z" />
   </svg>
 );

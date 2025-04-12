@@ -5,6 +5,7 @@ import { useSearchBar } from './useSearchBar';
 import { SearchResultsPage } from '../SearchResultsPage';
 import { MangaDetails } from '../../manga/MangaDetails';
 import { Manga } from '../../../types/manga';
+import { SearchInputProps } from './types';
 
 export const SearchBar: React.FC = () => {
   const [selectedManga, setSelectedManga] = useState<Manga | null>(null);
@@ -17,7 +18,6 @@ export const SearchBar: React.FC = () => {
     showResults,
     showSuggestions,
     inputRef,
-    setQuery,
     handlers
   } = useSearchBar();
 
@@ -33,20 +33,14 @@ export const SearchBar: React.FC = () => {
         isExpanded={isExpanded}
         isLoading={isLoading}
         inputRef={inputRef}
-        onQueryChange={setQuery}
-        onExpand={handlers.onExpand}
-        onCollapse={handlers.onCollapse}
-        onClear={handlers.onClear}
-        onKeyDown={handlers.onKeyDown}
+        {...handlers}
       />
 
-      {showSuggestions && (
-        <SearchSuggestions
-          results={results}
-          onSelect={handleMangaSelect}
-          isVisible={showSuggestions}
-        />
-      )}
+      <SearchSuggestions
+        results={results}
+        onSelect={handleMangaSelect}
+        isVisible={showSuggestions}
+      />
 
       {showResults && (
         <SearchResultsPage
@@ -55,6 +49,13 @@ export const SearchBar: React.FC = () => {
           isLoading={isLoading}
           onBack={handlers.onHideResults}
           onMangaSelect={handleMangaSelect}
+          searchBarProps={{
+            query,
+            isExpanded,
+            isLoading,
+            inputRef,
+            ...handlers
+          }}
         />
       )}
 
