@@ -9,7 +9,7 @@ export const CookiePolicy: React.FC = () => (
     icon={Cookie}
     japaneseTitle="クッキーポリシー"
   >
-    <LastUpdated date="2024-03-20" />
+    <LastUpdated date="2025-09-16" />
     
     <div className="space-y-6">
       <section>
@@ -23,7 +23,7 @@ export const CookiePolicy: React.FC = () => (
       <section>
         <h2 className="text-xl font-semibold text-white mb-4">How We Use Cookies</h2>
         <div className="space-y-4 text-zinc-300">
-          <p>We use cookies for:</p>
+          <p>We use essential cookies and local storage for:</p>
           <ul className="list-disc pl-5 space-y-2">
             <li>Remembering your reading preferences</li>
             <li>Maintaining your session and authentication</li>
@@ -31,6 +31,13 @@ export const CookiePolicy: React.FC = () => (
             <li>Personalizing your experience</li>
           </ul>
         </div>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold text-white mb-4">No Third‑Party Ads</h2>
+        <p className="text-zinc-300">
+          We do not run third‑party advertising cookies or tracking pixels.
+        </p>
       </section>
 
       <section>

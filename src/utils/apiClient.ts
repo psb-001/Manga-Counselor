@@ -32,7 +32,7 @@ async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>>
 
 export async function apiGet<T>(endpoint: string, params: Record<string, string> = {}): Promise<ApiResponse<T>> {
   const queryString = new URLSearchParams(
-    Object.entries(params).filter(([_, value]) => value !== '')
+    Object.entries(params).filter(([, value]) => value !== '')
   ).toString();
   
   const url = `${API_CONFIG.BASE_URL}${endpoint}${queryString ? `?${queryString}` : ''}`;

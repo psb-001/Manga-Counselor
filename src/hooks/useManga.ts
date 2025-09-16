@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useApi } from './useApi';
 import { mangaService } from '../services/mangaService';
 import { genreService } from '../services/genreService';
@@ -24,15 +24,16 @@ export const useManga = () => {
     }
   });
 
+  const loadInitialData = useCallback(async () => {
+    await Promise.all([
+      executePopular(() => mangaService.getPopular()),
+      executeGenres(() => genreService.getGenres())
+    ]);
+  }, [executePopular, executeGenres]);
+
   useEffect(() => {
-    const loadInitialData = async () => {
-      await Promise.all([
-        executePopular(() => mangaService.getPopular()),
-        executeGenres(() => genreService.getGenres())
-      ]);
-    };
     loadInitialData();
-  }, []);
+  }, [loadInitialData]);
 
   return {
     popularManga,

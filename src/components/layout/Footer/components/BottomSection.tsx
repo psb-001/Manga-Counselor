@@ -20,9 +20,9 @@ export const BottomSection: React.FC = () => {
           ))}
         </div>
         <p className="text-sm text-zinc-500">
-          © {new Date().getFullYear()} マンガハブ
+          © {new Date().getFullYear()} Manga Counselor
           <span className="mx-2">•</span>
-          <span className="japanese-text">全著作権所有</span>
+          <span>All rights reserved</span>
         </p>
       </div>
     </div>

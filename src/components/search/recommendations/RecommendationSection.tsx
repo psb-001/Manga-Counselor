@@ -1,7 +1,6 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
 import { Manga } from '../../../types/manga';
-import { MangaCard } from '../../manga/MangaCard';
 
 interface RecommendationSectionProps {
   recommendations: Manga[];

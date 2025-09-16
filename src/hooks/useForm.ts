@@ -8,7 +8,7 @@ interface UseFormProps<T> {
   validate?: (values: T) => Partial<Record<keyof T, string>>;
 }
 
-export function useForm<T extends Record<string, any>>({
+export function useForm<T extends Record<string, unknown>>({
   initialValues,
   onSubmit,
   validate
@@ -17,7 +17,7 @@ export function useForm<T extends Record<string, any>>({
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
   const [status, setStatus] = useState<StatusType>(FORM_STATUS.IDLE);
 
-  const handleChange = (name: keyof T, value: any) => {
+  const handleChange = (name: keyof T, value: T[keyof T]) => {
     setValues(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));

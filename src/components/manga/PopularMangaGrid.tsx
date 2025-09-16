@@ -17,7 +17,7 @@ export const PopularMangaGrid: React.FC<PopularMangaGridProps> = ({ onMoreInfo }
   const [hasMore, setHasMore] = useState(true);
   const [totalItems, setTotalItems] = useState(0);
 
-  const loadManga = async (pageNum: number) => {
+  const loadManga = React.useCallback(async (pageNum: number) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -42,11 +42,11 @@ export const PopularMangaGrid: React.FC<PopularMangaGridProps> = ({ onMoreInfo }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [manga.length]);
 
   useEffect(() => {
     loadManga(1);
-  }, []);
+  }, [loadManga]);
 
   const handleLoadMore = () => {
     if (!isLoading && hasMore) {

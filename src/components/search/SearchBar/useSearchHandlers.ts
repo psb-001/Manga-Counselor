@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Manga } from '../../../types/manga';
 
 interface UseSearchHandlersProps {
   query: string;

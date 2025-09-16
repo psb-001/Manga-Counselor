@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { X, Star, Calendar, BookOpen, Users } from 'lucide-react';
+import { X, Star, BookOpen } from 'lucide-react';
 import { Manga } from '../../types/manga';
 
 interface MangaDetailsProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, BookOpen, Globe2, Heart } from 'lucide-react';
+// Removed unused lucide-react imports
 import { PageLayout } from '../components/PageLayout';
 import { TeamSection } from './sections/TeamSection';
 import { MissionSection } from './sections/MissionSection';

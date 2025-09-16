@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { SearchFilters } from '../types/search';
+import { Manga } from '../types/manga';
 
 const initialFilters: SearchFilters = {
   status: '',
@@ -21,7 +22,7 @@ export const useSearchFilters = () => {
     setFilters(initialFilters);
   }, []);
 
-  const applyFilters = useCallback((results: any[]) => {
+  const applyFilters = useCallback((results: Manga[]) => {
     return results.filter(manga => {
       // Status filter
       if (filters.status && manga.status.toLowerCase() !== filters.status.toLowerCase()) {

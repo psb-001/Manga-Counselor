@@ -7,6 +7,6 @@ export interface SearchFilters {
 export interface SearchState {
   query: string;
   filters: SearchFilters;
-  results: any[];
+  results: import('./manga').Manga[];
   isLoading: boolean;
 }

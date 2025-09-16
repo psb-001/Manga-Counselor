@@ -10,7 +10,7 @@ interface RecommendationFiltersProps {
     rating: string;
   };
   genres: Genre[];
-  onFilterChange: (filters: any) => void;
+  onFilterChange: (filters: { genre: string; year: string; rating: string }) => void;
   onSearch: () => void;
 }
 

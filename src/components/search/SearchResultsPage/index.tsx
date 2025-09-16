@@ -1,11 +1,13 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowLeft, Search, Loader } from 'lucide-react';
+import { ArrowLeft, Loader } from 'lucide-react';
 import { Manga } from '../../../types/manga';
 import { SearchResultsList } from './SearchResultsList';
 import { SearchFiltersPanel } from './SearchFilters';
 import { useSearchFilters } from '../../../hooks/useSearchFilters';
 import { SearchInput } from '../SearchBar/SearchInput';
+
+import type { SearchInputProps } from '../SearchBar/types';
 
 interface SearchResultsPageProps {
   query: string;
@@ -13,7 +15,7 @@ interface SearchResultsPageProps {
   isLoading: boolean;
   onBack: () => void;
   onMangaSelect: (manga: Manga) => void;
-  searchBarProps: any; // Using any for brevity, should be properly typed
+  searchBarProps: SearchInputProps;
 }
 
 export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
