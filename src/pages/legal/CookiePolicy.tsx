@@ -7,7 +7,6 @@ export const CookiePolicy: React.FC = () => (
   <LegalPageLayout
     title="Cookie Policy"
     icon={Cookie}
-    japaneseTitle="クッキーポリシー"
   >
     <LastUpdated date="2024-03-20" />
     
@@ -38,6 +37,14 @@ export const CookiePolicy: React.FC = () => (
         <p className="text-zinc-300">
           You can control and/or delete cookies through your browser settings. However,
           removing cookies may affect your experience on our site.
+        </p>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold text-white mb-4">Contact Us</h2>
+        <p className="text-zinc-300">
+          Questions about cookies? Contact us at
+          <span className="mx-1 text-white">support@mangacounselor.com</span>.
         </p>
       </section>
     </div>

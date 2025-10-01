@@ -5,7 +5,6 @@ const links = [
   { href: '/privacy', label: 'Privacy Policy' },
   { href: '/terms', label: 'Terms of Service' },
   { href: '/cookies', label: 'Cookie Policy' },
-  { href: '/sitemap', label: 'Sitemap' },
 ];
 
 export const BottomSection: React.FC = () => {
@@ -20,9 +19,9 @@ export const BottomSection: React.FC = () => {
           ))}
         </div>
         <p className="text-sm text-zinc-500">
-          © {new Date().getFullYear()} マンガハブ
+          © {new Date().getFullYear()} MangaCounselor
           <span className="mx-2">•</span>
-          <span className="japanese-text">全著作権所有</span>
+          All rights reserved
         </p>
       </div>
     </div>

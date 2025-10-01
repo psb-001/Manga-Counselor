@@ -9,7 +9,7 @@ export const About: React.FC = () => {
           <Scroll className="w-6 h-6 text-red-400" />
         </div>
         <h3 className="text-xl font-bold text-zinc-100">
-          マンガ<span className="text-red-400">ハブ</span>
+          Manga<span className="text-red-400">Counselor</span>
         </h3>
       </div>
       <p className="text-sm text-zinc-400">

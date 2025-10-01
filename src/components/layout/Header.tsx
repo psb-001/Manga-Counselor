@@ -10,7 +10,7 @@ export const Header = () => {
           <div className="flex items-center space-x-2">
             <BookHeart className="w-8 h-8 text-red-400" />
             <h1 className="text-2xl font-bold text-white">
-              マンガ<span className="text-red-400">カウンセラー</span>
+              Manga<span className="text-red-400">Counselor</span>
             </h1>
           </div>
           

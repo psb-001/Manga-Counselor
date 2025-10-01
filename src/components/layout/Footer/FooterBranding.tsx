@@ -10,7 +10,7 @@ export const FooterBranding: React.FC = () => {
         </div>
         <div>
           <h3 className="text-2xl font-bold text-white">
-            マンガ<span className="text-red-400">カウンセラー</span>
+            Manga<span className="text-red-400">Counselor</span>
           </h3>
           <p className="text-sm text-zinc-400">Your Personal Manga Guide</p>
         </div>

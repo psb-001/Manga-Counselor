@@ -10,7 +10,7 @@ export const BrandingSection: React.FC = () => {
         </div>
         <div>
           <h3 className="text-2xl font-bold text-zinc-100">
-            マンガ<span className="text-red-400">ハブ</span>
+            Manga<span className="text-red-400">Counselor</span>
           </h3>
           <p className="text-sm text-zinc-500">Discover Your Next Adventure</p>
         </div>

@@ -7,7 +7,6 @@ export const PrivacyPolicy: React.FC = () => (
   <LegalPageLayout
     title="Privacy Policy"
     icon={Shield}
-    japaneseTitle="プライバシーポリシー"
   >
     <LastUpdated date="2024-03-20" />
     
@@ -16,8 +15,15 @@ export const PrivacyPolicy: React.FC = () => (
         <h2 className="text-xl font-semibold text-white mb-4">Information We Collect</h2>
         <div className="space-y-4 text-zinc-300">
           <p>
-            We collect information you provide directly to us when using Manga Counselor:
+            We collect information you provide directly to us when using MangaCounselor:
           </p>
+      <section>
+        <h2 className="text-xl font-semibold text-white mb-4">Contact Us</h2>
+        <p className="text-zinc-300">
+          If you have questions about this policy, contact us at
+          <span className="mx-1 text-white">support@mangacounselor.com</span>.
+        </p>
+      </section>
           <ul className="list-disc pl-5 space-y-2">
             <li>Reading preferences and manga lists</li>
             <li>Search history and interactions</li>

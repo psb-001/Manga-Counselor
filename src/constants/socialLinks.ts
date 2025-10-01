@@ -1,6 +1,4 @@
-import { DivideIcon as LucideIcon, Twitter, Github, Youtube, MessagesSquare } from 'lucide-react';
-import { TelegramIcon } from '../components/icons/TelegramIcon';
-import { BlueskyIcon } from '../components/icons/BlueskyIcon';
+import { DivideIcon as LucideIcon, Github, Instagram, Linkedin } from 'lucide-react';
 
 export interface SocialLink {
   icon: LucideIcon;
@@ -11,33 +9,21 @@ export interface SocialLink {
 
 export const SOCIAL_LINKS: SocialLink[] = [
   { 
-    icon: Twitter, 
-    label: 'Twitter', 
-    href: 'https://twitter.com/mangacounselor',
-    japanese: 'ツイッター'
-  },
-  { 
     icon: Github, 
     label: 'GitHub', 
-    href: 'https://github.com/mangacounselor',
+    href: 'https://github.com/psb-001',
     japanese: 'ギットハブ'
   },
   { 
-    icon: BlueskyIcon,
-    label: 'Bluesky', 
-    href: 'https://bsky.app/profile/mangacounselor.bsky.social',
-    japanese: 'ブルースカイ'
+    icon: Linkedin, 
+    label: 'LinkedIn', 
+    href: 'https://www.linkedin.com/in/prathamesh-bhujbal-psb',
+    japanese: 'リンクトイン'
   },
   { 
-    icon: TelegramIcon,
-    label: 'Telegram',
-    href: 'https://t.me/mangacounselor',
-    japanese: 'テレグラム'
-  },
-  {
-    icon: MessagesSquare,
-    label: 'Discord',
-    href: 'https://discord.gg/mangacounselor',
-    japanese: 'ディスコード'
+    icon: Instagram,
+    label: 'Instagram', 
+    href: 'https://www.instagram.com/pratham01012007',
+    japanese: 'インスタグラム'
   }
 ];

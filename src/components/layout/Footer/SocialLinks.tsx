@@ -1,11 +1,9 @@
 import React from 'react';
-import { Twitter, Github, MessageCircle } from 'lucide-react';
+import { Github } from 'lucide-react';
 
 export const SocialLinks: React.FC = () => {
   const socialLinks = [
-    { icon: Twitter, href: 'https://twitter.com/mangahub', label: 'Twitter' },
-    { icon: Github, href: 'https://github.com/mangahub', label: 'GitHub' },
-    { icon: MessageCircle, href: 'https://discord.gg/mangahub', label: 'Discord' },
+    { icon: Github, href: 'https://github.com/psb-001', label: 'GitHub' },
   ];
 
   return (

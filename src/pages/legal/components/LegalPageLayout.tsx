@@ -1,10 +1,10 @@
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Link } from '../../../components/common/Link';
 
 interface LegalPageLayoutProps {
   title: string;
-  japaneseTitle: string;
+  japaneseTitle?: string;
   icon: LucideIcon;
   children: React.ReactNode;
 }
@@ -29,9 +29,11 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
           <Icon className="w-8 h-8 text-red-400" />
           <h1 className="text-3xl font-bold text-white">
             {title}
-            <span className="text-sm text-zinc-400 ml-3 japanese-text">
-              {japaneseTitle}
-            </span>
+            {japaneseTitle && (
+              <span className="text-sm text-zinc-400 ml-3 japanese-text">
+                {japaneseTitle}
+              </span>
+            )}
           </h1>
         </div>
       </div>

@@ -11,8 +11,7 @@ const socialLinks = [
 const footerLinks = [
   { href: '/privacy', label: 'Privacy' },
   { href: '/terms', label: 'Terms' },
-  { href: '/cookies', label: 'Cookies' },
-  { href: '/sitemap', label: 'Sitemap' }
+  { href: '/cookies', label: 'Cookies' }
 ];
 
 export const FooterBottom: React.FC = () => {
@@ -39,9 +38,9 @@ export const FooterBottom: React.FC = () => {
 
         {/* Copyright */}
         <div className="md:ml-auto text-sm text-zinc-600 text-center md:text-right whitespace-nowrap">
-          © {currentYear} マンガカウンセラー
+          © {currentYear} MangaCounselor
           <span className="mx-2">•</span>
-          <span className="japanese-text">全著作権所有</span>
+          All rights reserved
         </div>
       </div>
     </div>

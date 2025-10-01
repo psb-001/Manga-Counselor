@@ -1,27 +1,19 @@
 import React from 'react';
-import { Twitter, Github, Youtube, MessageCircle, Twitch, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { Github, Instagram, Linkedin } from 'lucide-react';
 
 const socialLinks = [
-  { icon: Twitter, label: 'Twitter', href: 'https://twitter.com/mangahub',  },
-  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/mangahub',  },
-  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/mangahub',  },
-  { icon: Youtube, label: 'YouTube', href: 'https://youtube.com/mangahub',  },
-  { icon: Github, label: 'GitHub', href: 'https://github.com/mangahub',  },
-  { icon: MessageCircle, label: 'Discord', href: 'https://discord.gg/mangahub', },
-  { icon: Twitch, label: 'Twitch', href: 'https://twitch.tv/mangahub', },
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/mangahub', },
+  { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/pratham01012007',  },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/prathamesh-bhujbal-psb', },
+  { icon: Github, label: 'GitHub', href: 'https://github.com/psb-001',  },
 ];
 
 export const SocialLinks: React.FC = () => {
   return (
     <div className="space-y-4">
-      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
-        Connect With Us
-        <span className="text-sm text-zinc-400 japanese-text">フォローする</span>
-      </h4>
+      <h4 className="text-lg font-semibold text-white">Connect With Us</h4>
       
-      <div className="grid grid-cols-4 sm:grid-cols-8 gap-4">
-        {socialLinks.map(({ icon: Icon, label, href, japanese }) => (
+      <div className="grid grid-cols-3 gap-4">
+        {socialLinks.map(({ icon: Icon, label, href }) => (
           <a
             key={label}
             href={href}
@@ -37,9 +29,8 @@ export const SocialLinks: React.FC = () => {
               <Icon className="w-5 h-5 text-zinc-400 group-hover:text-red-400 
                 transition-colors duration-300" />
             </div>
-            <span className="text-xs text-zinc-500 group-hover:text-red-400 
-              transition-colors duration-300 hidden sm:block">
-              {japanese}
+            <span className="text-xs text-zinc-500 group-hover:text-red-400 transition-colors duration-300 hidden sm:block">
+              {label}
             </span>
           </a>
         ))}

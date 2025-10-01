@@ -1,4 +1,4 @@
-# Manga Counselor - Robots.txt
+# MangaCounselor - Robots.txt
 # https://mangacounselor.com
 
 User-agent: *
